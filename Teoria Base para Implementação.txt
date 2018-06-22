@@ -1,3 +1,17 @@
+Trabalho de TR2 1/2018
+
+Bibliotecas a serem usadas:
+	stdio.h
+	stdlib.h
+	string.h
+	netinet/in.h
+	sys/types.h
+	sys/socket.h
+
+
+Biblioteca gráfica a ser usada:
+GTK+
+
 Teoria para trabalho de TR2 1/2018
 
 Link de fórum explicando sobre requisições HTTP em linguagem C: 
