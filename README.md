@@ -19,9 +19,38 @@ Alunos:
 
 
 
-Introdução Teórica
+INTRODUÇÃO TEÓRICA
 
-       HTTP é a sigla de "Hyper Text Transfer Protocol", o que traduzido seria "Protocolo de Tranferência de Hiper Texto". Quando acessamos a pígina do google, o navegador se conecta na porta 80 do servidor - isto mesmo, o protocolo HTTP roda sob a porta 80 - e envia uma requisição HTTP para este. Isso não ocorre apenas com píginas WEB - podemos fazer download de arquivos de som, fotos, músicas, etc.
+
+Cliente-servidor
+
+        O modelo cliente-servidor,é uma estrutura de aplicação que distribui as tarefas e cargas de trabalho entre os fornecedores de um recurso ou serviço(servidores), e os requerentes dos serviços(clientes).
+        Geralmente os clientes e servidores comunicam através de uma rede em computadores distintos, mas tanto o cliente quanto o servidor podem residir no mesmo computador.
+        Um servidor é um host que está executando um ou mais serviços ou programas que compartilham recursos com os clientes. Um cliente não compartilha seus recursos, mas solicita um conteúdo ou função do servidor. Os clientes iniciam sessões de comunicação com os servidores que aguardam requisições de entrada.
+        
+        Características do Cliente:
+
+                Inicia pedidos para servidores;
+                Espera por respostas;
+                Recebe respostas;
+                Conecta-se a um pequeno número de servidores de uma só vez ;
+                Normalmente interage diretamente com os servidores através de seu software aplicação especifico, que lhe possibilita a comunicação com o servidor;
+                Utiliza recursos da rede.
+
+        Características do Servidor:
+
+                Sempre espera por um pedido de um cliente;
+                Atende os pedidos e, em seguida, responde aos clientes com os dados solicitados;
+                Podem se conectar com outros servidores para atender uma solicitação específica do cliente; jamais podem se             comunicar.
+                Fornece recursos de rede.
+                Normalmente interage diretamente com os usuários finais através de qualquer interface com o usuário;
+                Estrutura o sistema.
+
+       
+       
+Requisições HTTP
+  
+        HTTP é a sigla de "Hyper Text Transfer Protocol", o que traduzido seria "Protocolo de Tranferência de Hiper Texto". Quando acessamos a pígina do google, o navegador se conecta na porta 80 do servidor - isto mesmo, o protocolo HTTP roda sob a porta 80 - e envia uma requisição HTTP para este. Isso não ocorre apenas com píginas WEB - podemos fazer download de arquivos de som, fotos, músicas, etc.
         Cliente --------------> Servidor (1)
         Cliente <-------------- Servidor (2)
 
@@ -55,5 +84,7 @@ Sockets
                         socket (familia, tipo, protocolo);
           O nome de um socket sempre está relacionado a um espaço de nomes, também chamado de domínio (socket domain).Cada espaço de nomes é definido por uma macro na forma PF_* (que vem do termo Protocol Family). Os sockets são divididos em tipos. São eles: SOCK_STREAM, SOCK_DGRAM, SOCK_SEQPACKET, SOCK_RAW, SOCK_RDM, SOCK_PACKET.
           
+          
+
                       
       
