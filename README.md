@@ -44,5 +44,16 @@ Introdução Teórica
         
         Este header diz ao servidor que o cliente está requisitando o arquivo principal do diretório
 
-        
+Sockets
+
+        Especificamente em computação, um soquete pode ser usado em ligações de redes de computadores para um fim de um elo bidirecional de comunicação entre dois programas. A interface padronizada de soquetes surgiu originalmente no sistema operacional Unix BSD(Berkeley Software Distribution); portanto, eles são muitas vezes chamados de Berkeley Sockets. É também uma abstração computacional que mapeia diretamente a uma porta de transporte (TCP ou UDP) e mais um endereço de rede. Com esse conceito é possível identificar unicamente um aplicativo ou servidor na rede de comunicação IP.
+        Um socket identifica univocamente um usuário TCP 
+        Permite a associação entre processos de aplicação 
+        O identificador da porta é concatenado ao endereço IP, onde a entidade TCP está rodando, definindo um socket.
+        Função socket ()
+                exemplo de uso
+                        socket (familia, tipo, protocolo);
+          O nome de um socket sempre está relacionado a um espaço de nomes, também chamado de domínio (socket domain).Cada espaço de nomes é definido por uma macro na forma PF_* (que vem do termo Protocol Family). Os sockets são divididos em tipos. São eles: SOCK_STREAM, SOCK_DGRAM, SOCK_SEQPACKET, SOCK_RAW, SOCK_RDM, SOCK_PACKET.
+          
+                      
       
