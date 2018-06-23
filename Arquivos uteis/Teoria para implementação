@@ -1,0 +1,35 @@
+Trabalho de TR2 1/2018
+
+Bibliotecas a serem usadas:
+	stdio.h
+	stdlib.h
+	string.h
+	netinet/in.h
+	sys/types.h
+	sys/socket.h
+
+
+Biblioteca gráfica a ser usada:
+GTK+
+
+Teoria para trabalho de TR2 1/2018
+
+Link de fórum explicando sobre requisições HTTP em linguagem C: 
+	http://www.forum-invaders.com.br/vb/showthread.php/13432-Tutorial-Requisi%C3%A7%C3%B5es-HTTP-C
+
+
+Web Server em C:
+	https://www.codigofonte.com.br/codigos/web-server-em-c
+
+
+
+Sockets em linguagem C:
+	https://www.exploit-db.com/papers/13634/
+
+
+Exemplo de Cliente e Servidor Usando Socket no Linux:
+	https://www.vivaolinux.com.br/script/Exemplo-de-Cliente-e-Servidor-Usando-Socket-no-Linux
+
+
+Aplicação http em Java:
+https://github.com/BrunoRV/ProjetoTR2
