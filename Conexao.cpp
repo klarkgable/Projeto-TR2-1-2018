@@ -18,227 +18,237 @@
 
 
 
-///funçoes de requisicao externa
+
 namespace Socket {
 
-ExtListener::ExtListener() {
+
+///funçoes de requisicao interna
+conexaoInterna::conexaoInterna( int porta ) : porta( porta ), socketPrincipal( -1 ) {
     errno = 0;
-	FD_ZERO( &active_fd_set );
+
+    //criando socket em TCP(socket principal)
+	socketPrincipal = socket( AF_INET, SOCK_STREAM, 0 );
+	if( socketPrincipal < 0 ) {
+		printf( "\nErro na criacao do Socket.\n" );
+	} else {
+		endereco.sin_family = AF_INET;
+		endereco.sin_endereco.s_addr = htonl( INADDR_LOOPBACK );
+		endereco.sin_port = htons( porta );
+		memset( &(endereco.sin_zero), 0, sizeof( endereco.sin_zero ) );
+		//comunicaçao com socket principal
+            if( bind( socketPrincipal, (struct sockaddr *) &endereco, sizeof(endereco) ) < 0 ) {
+                printf( "\nFalha ao tentar comunicar com socket.\n" );
+            } else {
+                FD_ZERO( &active_fd_set );
+                FD_SET( socketPrincipal, &active_fd_set );
+                if( listen( socketPrincipal, QUEUESIZE ) < 0 ) {
+                    printf( "\nFalha ao iniciar conexao.\n" );
+                }
+            }
+        }
 }
 
-ExtListener::~ExtListener() {
-	for( int i = connections.size() - 1; i >= 0; i-- ) {
-		if( close( connections[i].socket ) < 0 ) {
-			closeError();
-		}
-		FD_CLR( connections[i].socket, &active_fd_set );
+conexaoInterna::~conexaoInterna() {
+	for( int i = conexoes.size() - 1; i >= 0; i-- ) {
+		FD_CLR( conexoes[i].socket, &active_fd_set );
+	}
+
+	if( socketPrincipal >= 0 ) {
+		FD_CLR( socketPrincipal, &active_fd_set );
 	}
 }
 
-ssize_t ExtListener::Send( int connectionIDofInternal, std::string addr, int port, std::string message ) {
-	SocketInfo si;
-	si.socket = -1;
-	si.addr = addr;
-	si.port = port;
-	si.connectionIDofInternal = connectionIDofInternal;
+void conexaoInterna::AceitaErecebe(){
+	    read_fd_set = active_fd_set;
+	    timeout.tv_sec = 0;
+	    timeout.tv_usec = INTLISTENER_TIMEOUT_MS;
 
-	if( (si.socket = socket( AF_INET, SOCK_STREAM, 0 )) < 0 ) {
-		printf( "\nSocket creation error\n" );
-		socketError();
-	} else {
-		memset( &(si.serv_addr), '0', sizeof( si.serv_addr ) );
+	    //seleçao de sockets
+	    if( select( FD_SETSIZE, &read_fd_set, NULL, NULL, &timeout ) < 0 ) {
+		    printf( "\nNao pode esperar para selecionar Sockets.\n" );
+	    }
 
-		si.serv_addr.sin_family = AF_INET;
-		si.serv_addr.sin_port = htons( port );
+	    for( int i = 0; i < FD_SETSIZE; i++ ) {
+		    if( FD_ISSET(i, &read_fd_set ) ) {
+			    if( i == socketPrincipal ) {
+				    //Aceitando conexoes
+				    DadosConexao dc;
+				    socklen_t length = sizeof(struct sockaddr_in);
+				    dc.socket = accept( socketPrincipal, (struct sockaddr*) &(dc.endereco), &length );
+				    if( -1 < dc.socket ) {
+					    conexoes.push_back( dc );
+					    FD_SET( dc.socket, &active_fd_set );
+				    } else {
+					    printf( "\nNão foi possível aceitar o soquete.\n" );
+				    }
+			    } else {
+				    //Recebendo dados
+				    int conexaoID;
+				    for( conexaoID = 0; conexaoID< (int) conexoes.size(); conexaoID++ ) {
+					    if( conexoes[conexaoID].socket == i ) break;
+				    }
 
-		// Convert IPv4 and IPv6 addresses from text to binary form
-		if( inet_pton( AF_INET, addr.c_str(), &(si.serv_addr.sin_addr) ) <= 0 ) {
-			printf( "\nInvalid address / Address not supported.\n" );
-		} else if( connect( si.socket, (struct sockaddr *) &(si.serv_addr), sizeof(si.serv_addr) ) < 0 ) {
-			printf( "\nConnection Failed\n" );
-			connectError();
-		} else {
-			connections.push_back( si );
-			FD_SET( si.socket, &active_fd_set );
-			ssize_t sent = send( si.socket, message.c_str(), message.length(), 0 );
-			if( sent < -1 ) {
-				printf( "\nCould not send data.\n" );
-				sendError();
+				    int valorlido = 0;
+					std::string mensagem("");
+					do {
+						char buffer[1024];
+						valorlido = read( i, buffer, sizeof( buffer ) );
+						mensagem += std::string( buffer, valorlido );
+                    } while (1024 == valorlido);
+
+				    if( 0 < valorlido) {
+					    DadosMensagem dm;
+					    dm.mensagem = mensagem
+					    dm.IDconexaoInterna = conexaoID;
+					    dm.endereco_de = std::string( inet_ntoa( conexoes[conexaoID].endereco.sin_addr ) );
+					    dm.porta_de = ntohs( conexoes[conexaoID].endereco.sin_port );;
+					    dm.endereco_para = "127.0.0.1";
+					    dm.porta_para = porta;
+					    mensagensRecebidas.push_back( dm );
+				    } else if( 0 == valorlido ) {
+					    FD_CLR( i, &active_fd_set );
+					    conexoes.erase( conexoes.begin() + conexaoID );
+				    } else {
+					    printf( "\nNao foi possivel ler dados.\n" );
+				    }
+			    }
+		    }
+	    }
+
+}
+
+ssize_t conexaoInterna::Envio( int IDconexao, std::string mensagem ) {
+		if( IDconexao < (int) conexoes.size() ) {
+			ssize_t sent = send( conexoes[IDconexao].socket , mensagem.c_str(), mensagem.length(), 0 );
+			if( sent < 0 ) {
+				printf( "\nNao foi possivel enviar dados.\n" );
 			} else {
 				return sent;
 			}
+		} else {
+			printf( "\nconexaoID invalida.\n" );
 		}
+	else {
+		printf( "\nNao foi possivel enviar mensagem. A conexao não está em um estado válido para enviar dados.\n" );
 	}
 	return -1;
 }
 
-void ExtListener::ReceiveMessages() {
+
+
+///funçoes de requisicao externa
+conexaoExterna::conexaoExterna(int porta): porta(porta) {
+    errno = 0;
+	FD_ZERO( &active_fd_set );
+}
+
+conexaoExterna::~conexaoExterna() {
+	for( int i = conexoes.size() - 1; i >= 0; i-- ) {
+		FD_CLR( conexoes[i].socket, &active_fd_set );
+	}
+}
+
+ssize_t conexaoExterna::Envio( int IDconexaoDeInterna, std::string endereco, int porta, std::string mensagem ) {
+	InfoSocket is;
+
+    //auxiliares para tratar gets do http com host em nomes ex:
+    struct addrinfo *auxiliar1, *auxiliar2;
+    struct addrinfo sugestoes;
+
+
+    is.IDconexaoDeInterna = IDconexaoDeInterna;
+
+
+
+	memset(&sugestoes, 0, sizeof(struct addrinfo));
+	sugestoes.auxiliar1_family = AF_INET;
+	sugestoes.auxiliar1_socktype = SOCK_STREAM;
+	sugestoes.auxiliar1_flags = 0;
+	sugestoes.auxiliar1_protocol = 0; /* Any protocol */
+
+	int sugestao = getaddrinfo( endereco.c_str(), std::texto( port ).c_str(), &sugestoes, &auxiliar1 );
+	if( 0 > sugestao ) {
+		printf( "\nErro ao procurar nome.\n" );
+		printf( "getaddrinfo: %s\n", gai_strerror( sugestao ) );
+		return -1;
+	}
+
+	for( auxiliar2 = auxiliar1; auxiliar2 != NULL; auxiliar2 = aauxiliar2->auxiliar1_next ) {
+		std::memcpy( &(is.serv_addr), auxiliar2->auxiliar1_addr, auxiliar2->auxiliar1_addrlen );
+		is.endereco = std::string( inet_ntoa( is.serv_addr.sin_addr ) );
+		is.porta = ntohs( is.serv_addr.sin_port );
+		is.socket = socket(auxiliar2->auxiliar1_family, auxiliar2->auxiliar1_socktype, auxiliar2->auxiliar1_protocol);
+		if( -1 == is.socket ) {
+			printf( "\nFalha ao criar socket. Entre com outro endereco...\n" );
+			continue;
+		}
+		if( 0 > connect( is.socket, auxiliar2->auxiliar1_addr, auxiliar2->auxiliar1_addrlen ) ) {
+			printf( "\nFalha ao conectar com socket. Entre com outro endereco...\n" );
+			close( is.socket );
+		} else {
+			break;
+		}
+	}
+
+	if( NULL == auxiliar2 ) {
+    printf( "\nNão foi possivel conectar...\n");
+    }else {
+        conexoes.push_back( is );
+        FD_SET( is.socket, &active_fd_set );
+        ssize_t sent = send( is.socket, mensagem.c_str(), mensagem.length(), 0 );
+        if( sent < -1 ) {
+            printf( "\nNão foi possível enviar dados.\n" );
+        } else {
+            freeaddrinfo(auxiliar1);
+            return sent;
+			}
+		}
+	}
+    freeaddrinfo(auxiliar1);
+	return -1;
+}
+
+void conexaoExterna::RecebeMensagens(){
 	read_fd_set = active_fd_set;
 	timeout.tv_sec = 0;
 	timeout.tv_usec = EXTLISTENER_TIMEOUT_MS;
 
 	if( select( FD_SETSIZE, &read_fd_set, NULL, NULL, &timeout ) < 0 ) {
-		printf( "\nCould not wait on select for sockets.\n" );
-		selectError();
+		printf( "\nNao pode esperar para selecionar Sockets.\n" );
 	}
 	for( int i = 0; i < FD_SETSIZE; i++ ) {
 		if( FD_ISSET(i, &read_fd_set ) ) {
-			// Receiving data
-			int connectionID;
-			for( connectionID = 0; connectionID < (int) connections.size(); connectionID++ ) {
-				if( connections[connectionID].socket == i ) break;
+			// Recebendo dados
+			int conexaoID;
+			for( conexaoID = 0; conexaoID < (int) conexoes.size(); conexaoID++ ) {
+				if( conexoes[conexaoID].socket == i ) break;
 			}
-			char buffer[1024];
-			int valread = read( i, buffer, 1024 );
-			if( 0 < valread) {
-				MessageData md;
-				md.message = std::string( buffer, valread );
-				md.internalConnectionID = connections[connectionID].connectionIDofInternal;
-				md.addr_from = connections[connectionID].addr;
-				md.port_from = connections[connectionID].port;
-				md.addr_to = "127.0.0.1";
-				md.port_to = 8228;
-				messagesReceived.push_back( md );
-			} else if( 0 == valread ) {
-				if( close( i ) < 0 ) {
-					closeError();
-				}
+			int valorlido = 0;
+			std::string mensagem("");
+			do {
+				char buffer[1024];
+				valorlido = read( i, buffer, sizeof( buffer ) );
+				mensagem += std::string( buffer, valorlido );
+            } while (1024 == valorlido);
+			if( 0 < valorlido) {
+				DadosMensagem dm;
+				dm.mensagem= mensagem
+				dm.IDconexaoInterna = conexoes[conexaoID].IDconexaoDeInterna;
+				dm.endereco_de = conexoes[conexaoID].endereco;
+				dm.porta_de = conexoes[conexaoID].porta;
+				dm.endereco_para = "127.0.0.1";
+				dm.port_para = porta;
+				mensagensRecebidas.push_back( dm );
+			} else if( 0 == valorlido ) {
 				FD_CLR( i, &active_fd_set );
-				connections.erase( connections.begin() + connectionID );
+				conexoes.erase( conexoes.begin() + conexaoID );
 			} else {
-				printf( "\nCould not read data.\n" );
-				readError();
+				printf( "\nDados nao puderam ser lidos.\n" );
 			}
 		}
 	}
 }
 
-};
 
-///funçoes de requisicao interna
-namespace Socket {
-
-IntListener::IntListener( int port ) : port( port ), socketfd( -1 ), state( 0 ) {
-    errno = 0;
-	socketfd = socket( AF_INET, SOCK_STREAM, 0 );
-	if( socketfd < 0 ) {
-		printf( "\nSocket creation error\n" );
-		socketError();
-	} else {
-		state |= intListenerState::SOCKET_CREATED;
-		address.sin_family = AF_INET;
-		address.sin_addr.s_addr = htonl( INADDR_LOOPBACK );
-		address.sin_port = htons( port );
-		memset( &(address.sin_zero), 0, sizeof( address.sin_zero ) );
-		if( bind( socketfd, (struct sockaddr *) &address, sizeof(address) ) < 0 ) {
-			printf( "\nFailed to bind socket.\n" );
-			bindError();
-		} else {
-			state |= intListenerState::SOCKET_BINDED;
-			FD_ZERO( &active_fd_set );
-			FD_SET( socketfd, &active_fd_set );
-			if( listen( socketfd, QUEUESIZE ) < 0 ) {
-				printf( "\nFailed to start listening.\n" );
-				listenError();
-			} else {
-				state |= intListenerState::INTLISTENER_STARTED;
-			}
-		}
-	}
-}
-
-IntListener::~IntListener() {
-	state = intListenerState::SHUTTING_DOWN;
-	for( int i = connections.size() - 1; i >= 0; i-- ) {
-		if( close( connections[i].socket ) < 0 ) {
-			closeError();
-		}
-		FD_CLR( connections[i].socket, &active_fd_set );
-	}
-	if( socketfd >= 0 ) {
-		if( close( socketfd ) < 0 ) {
-			closeError();
-		}
-		FD_CLR( socketfd, &active_fd_set );
-	}
-	state = 0;
-}
-
-void IntListener::AcceptAndReceive() {
-    if( state & intListenerState::INTLISTENER_STARTED ) {
-	    state |= intListenerState::INTLISTENER_RUNNING;
-
-	    read_fd_set = active_fd_set;
-	    timeout.tv_sec = 0;
-	    timeout.tv_usec = INTLISTENER_TIMEOUT_MS;
-	    if( select( FD_SETSIZE, &read_fd_set, NULL, NULL, &timeout ) < 0 ) {
-		    printf( "\nCould not wait on select for sockets.\n" );
-		    selectError();
-	    }
-	    for( int i = 0; i < FD_SETSIZE; i++ ) {
-		    if( FD_ISSET(i, &read_fd_set ) ) {
-			    if( i == socketfd ) {
-				    // Accepting connections
-				    ConnectionData cd;
-				    socklen_t length = sizeof(struct sockaddr_in);
-				    cd.socket = accept( socketfd, (struct sockaddr*) &(cd.address), &length );
-				    if( -1 < cd.socket ) {
-					    connections.push_back( cd );
-					    FD_SET( cd.socket, &active_fd_set );
-				    } else {
-					    printf( "\nCould not accept socket.\n" );
-					    acceptError();
-				    }
-			    } else {
-				    // Receiving data
-				    int connectionID;
-				    for( connectionID = 0; connectionID < (int) connections.size(); connectionID++ ) {
-					    if( connections[connectionID].socket == i ) break;
-				    }
-				    char buffer[1024];
-				    int valread = read( i, buffer, 1024 );
-				    if( 0 < valread) {
-					    MessageData md;
-					    md.message = std::string( buffer, valread );
-					    md.internalConnectionID = connectionID;
-					    md.addr_from = std::string( inet_ntoa( connections[connectionID].address.sin_addr ) );
-					    md.port_from = connections[connectionID].address.sin_port;
-					    md.addr_to = "127.0.0.1";
-					    md.port_to = port;
-					    messagesReceived.push_back( md );
-				    } else if( 0 == valread ) {
-					    if( close( i ) < 0 ) {
-						    closeError();
-					    }
-					    FD_CLR( i, &active_fd_set );
-					    connections.erase( connections.begin() + connectionID );
-				    } else {
-					    printf( "\nCould not read data.\n" );
-					    readError();
-				    }
-			    }
-		    }
-	    }
-    }
-}
-
-ssize_t IntListener::Send( int connectionID, std::string message ) {
-	if( state & intListenerState::INTLISTENER_RUNNING ) {
-		if( connectionID < (int) connections.size() ) {
-			ssize_t sent = send( connections[connectionID].socket , message.c_str(), message.length(), 0 );
-			if( sent < 0 ) {
-				printf( "\nCould not send data.\n" );
-				sendError();
-			} else {
-				return sent;
-			}
-		} else {
-			printf( "\nInvalid connectionID.\n" );
-		}
-	} else {
-		printf( "\nCannot send message. Listener is not in a valid state for sending data.\n" );
-	}
-	return -1;
-}
 
 };
