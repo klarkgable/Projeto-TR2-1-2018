@@ -16,29 +16,29 @@
 
 int main( int argc, char* argv[] ) {
 
-	int port = DEFAULT_PORT;
+	int porta = DEFAULT_PORT;
 	if( 3 == argc ) {
 		if( std::string( argv[1] ) == "-p" ) {
 			try {
 				port = std::stoi( std::string( argv[2] ) );
 			} catch( std::exception e ) {
-				printf( "\nInvalid port.\n" );
+				printf( "\nPorta invalida.\n" );
 				return -1;
 			}
 		} else {
-			printf( "\nOption not recognized.\nValid options:\n[-p <port>]\tchooses different port other than the default %d\n", port );
+			printf( "\nEntrada nao reconhecida.\nOpçoes validas:\n[-p <port>]\Escolha outra porta diferente da padrão %d\n", porta );
 			return -1;
 		}
 	} else if( 1 != argc ) {
-		printf( "\nInvalid argument numbers.\n" );
+		printf( "\nNumero de argumentos invalido.\n" );
 		return -1;
 	}
 
-	printf( "\nStarting aracne with port# %d\n", port );
+	printf( "\nIniciando aracne com porta# %d\n", porta );
 
-	ServidorProxy s( port );
+	ServidorProxy teste1( porta );
 
-	while( s.Loop() ) {};
+	while( teste1.Loop() ) {};
 
 	return 0;
 }
