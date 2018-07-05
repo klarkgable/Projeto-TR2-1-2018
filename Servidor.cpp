@@ -12,39 +12,48 @@
 #include <sys/socket.h>
 
 
-ServidorProxy::ServidorProxy( int port ) : il( port ), el() {}
+ServidorProxy::ServidorProxy( int porta ) : ci( porta ), ce() {}
 
 ServidorProxy::~ServidorProxy() {}
 
 bool ServidorProxy::Loop() {
-	// Leaving machine first
-	il.AcceptAndReceive();
-	if(0 < (int) il.messagesReceived.size() ) printf( "\nThere are %d outbound packets.\n", (int) il.messagesReceived.size() );
-	for( int i = 0; i < (int) il.messagesReceived.size(); i++ ) {
-		printf( "\nMessage from %s:%d to %s:%d\n%s\n"
-			, il.messagesReceived[i].addr_from.c_str()
-			, il.messagesReceived[i].port_from
-			, il.messagesReceived[i].addr_to.c_str()
-			, il.messagesReceived[i].port_to
-			, il.messagesReceived[i].message.c_str()
-		);
-		//el.Send( il.messagesReceived[i].internalConnectionID, il.messagesReceived[i].addr_to, il.messagesReceived[i].port_to, il.messagesReceived[i].message );
-	}
-	il.messagesReceived.clear();
+    //primeiro(pacotes que saem)
+	ci.AceitaERecebe();
+	if(0 < (int) ci.mensagensRecebidas.size() )
+        printf( "\nTemos %d pacotes saindo.\n", (int) ci.mensagensRecebidas.size() );
+	for( int i = 0; i < (int) ci.mesagensRecebidas.size(); i++ ) {
+        //resgatando parametro do cabeçalho
+        HTTP::Header header( ci.mensagensRecebidas[i].mensagem );
 
-	// Arriving machine last
-	el.ReceiveMessages();
-	if(0 < (int) el.messagesReceived.size() ) printf( "\nThere are %d inbound packets.\n", (int) el.messagesReceived.size() );
-	for( int i = 0; i < (int) el.messagesReceived.size(); i++ ) {
-		printf( "\nMessage from %s:%d to %s:%d\n%s\n"
-			, il.messagesReceived[i].addr_from.c_str()
-			, il.messagesReceived[i].port_from
-			, il.messagesReceived[i].addr_to.c_str()
-			, il.messagesReceived[i].port_to
-			, il.messagesReceived[i].message.c_str()
+		printf( "\nMensagem de %s:%d para %s:%d\n%s\n"
+            , ci.mensagensRecebidas[i].endereco_de.c_str()
+			, ci.mensagensRecebidas[i].porta_de
+			, header.host.c_str()
+            , header.porta.c_str()
+			, ci.mensagensRecebidas[i].mensagem.c_str()
 		);
-		//il.Send( el.messagesReceived[i].internalConnectionID, el.messagesReceived[i].message );
+		ce.Envio( ci.mensagensRecebidas[i].IDconexaoInterna, header.host.c_str(), std::atoi( header.porta.c_str() ), ci.mensagensRecebidas[i].mensagem );
 	}
-	el.messagesReceived.clear();
+	ci.mensagensRecebidas.clear();
+
+
+	//por ultimo (pacotes que entram)
+	ce.RecebeMensagens();
+	if(0 < (int) ce.mensagensRecebidas.size() )
+        printf( "\nTemos %d pacotes entrando.\n", (int) ce.mensagensRecebidas.size() );
+	for( int i = 0; i < (int) ce.mensagensRecebidas.size(); i++ ) {
+        //resgatando parametro do cabeçalho
+        HTTP::Header header( ce.mensagensRecebidas[i].mensagem );
+
+		printf( "\nMensagem de %s:%d para %s:%d\n%s\n"
+			, ci.mensagensRecebidas[i].endereco_de.c_str()
+			, ci.mensagensRecebidas[i].porta_de
+			, header.host.c_str()
+            , header.porta.c_str()
+			, header.texto( false ).c_str()
+		);
+		ci.Envio( ce.mensagensRecebidas[i].IDconexaoInterna, ce.mensagensRecebidas[i].mensagem );
+	}
+	ce.mensagensRecebidas.clear();
 	return true;
 }
