@@ -15,7 +15,7 @@
 namespace HTTP {
 
 ///metodo para Header
-Header::Header( std::string& palavra ) {
+Header::Header( std::string& palavra ) : PrimeiraLinha(), corpo(), host(), porta() {
 	if( !palavra.empty() ) {
 		//percorrendo texto do header
             unsigned int primeiro = 0;
