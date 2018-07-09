@@ -34,6 +34,7 @@ int main( int argc, char* argv[] ) {
 		return -1;
 	}
 
+	
 	printf( "\nIniciando aracne na porta# %d\n", porta );
 
 	Inspetor::ServidorProxy teste1( porta );
