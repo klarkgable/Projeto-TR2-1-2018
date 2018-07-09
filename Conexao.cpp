@@ -11,125 +11,269 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 
-#define INTLISTENER_TIMEOUT_MS 25
+
 #define QUEUESIZE 5
 
-#define EXTLISTENER_TIMEOUT_MS 25
 
 
+///funçoes para tratamento de Sockets
+Socket::Socket( int Descritor ) : valido(false), Descritor(Descritor) {
+	socklen_t addr_len = sizeof( endereco );
+	if( -1 == getsockname( Descritor, (struct sockaddr*) &endereco, &addr_len ) || addr_len != sizeof(endereco) ) {
+		fprintf( stderr, "\nErro no getsockname.\n" );
+	} else {
+		valido = true;
+	}
+}
+
+Socket::Socket() : valido(false), Descritor(-1), endereco() {}
+
+Socket::~Socket() {
+	if( valido ) {
+		if( -1 == close( Descritor ) ) {
+		} else {
+			valido = false;
+			Descritor = -1;
+		}
+	}
+}
+
+bool Socket::conecta( std::string nome, std::string porta, int socketFamily, int socketType, int protocol ) {
+	struct addrinfo *primeiro, *ultimo;	
+	struct addrinfo sugestoes;
 
 
-namespace Socket {
+	memset(&sugestoes, 0, sizeof(struct addrinfo));
+	sugestoes.ai_family = socketFamily;
+	sugestoes.ai_socktype = socketType;
+	sugestoes.ai_flags = 0;
+	sugestoes.ai_protocol = protocol;
+
+	int s = getaddrinfo( nome.c_str(), porta.c_str(), &sugestoes, &primeiro );
+	if( s < 0 ) {
+		fprintf( stderr, "\nErro ao procurar por nome.\n" );
+		fprintf( stderr, "getaddrinfo: %s\n", gai_strerror( s ) );
+	} else {
+		for( ultimo = primeiro; ultimo != NULL; ultimo = ultimo->ai_next ) {
+			Descritor = socket(ultimo->ai_family, ultimo->ai_socktype, ultimo->ai_protocol);
+			if( -1 == Descritor ) {
+				fprintf( stderr, "\nFalha ao criar socket. Tente outro endereco.\n" );
+				continue;
+			}
+			if(connect( Descritor, ultimo->ai_addr, ultimo->ai_addrlen )==-1 ) {
+				fprintf( stderr, "\nFalha ao criar socket. Tente outro endereco.\n" );
+				close( Descritor );
+			} else {
+				valido = true;
+				std::memcpy( &(endereco), ultimo->ai_addr, ultimo->ai_addrlen );
+				break;
+			}
+		}
+		if( NULL == ultimo ) {
+			fprintf( stderr, "\nNao foi possivel concetar com %s:%s...\n", nome.c_str(), porta.c_str() );
+		}
+	}
+	freeaddrinfo(primeiro);
+	return valido;
+}
+
+bool Socket::percorre( std::string nome, std::string porta, int queueSize, int socketFamily, int socketType, int protocol ) {
+	struct addrinfo *primeiro, *ultimo;
+	
+	struct addrinfo sugestoes;
+	memset(&sugestoes, 0, sizeof(struct addrinfo));
+	sugestoes.ai_family = socketFamily;
+	sugestoes.ai_socktype = socketType;
+	sugestoes.ai_flags = 0;
+	sugestoes.ai_protocol = protocol;
+
+	int s = getaddrinfo( nome.c_str(), porta.c_str(), &sugestoes, &primeiro );
+	if( s < 0 ) {
+		fprintf( stderr, "\nErro ao procurar nome.\n" );
+		fprintf( stderr, "getaddrinfo: %s\n", gai_strerror( s ) );
+	} else {
+		for( ultimo = primeiro; ultimo != NULL; ultimo = ultimo->ai_next ) {
+			Descritor = socket(ultimo->ai_family, ultimo->ai_socktype, ultimo->ai_protocol);
+			if( -1 == Descritor ) {
+				#ifdef DEBUG
+				fprintf( stderr, "\nFalha ao criar socket. Tente outro endereco.\n" );
+				#endif // DEBUG
+				continue;
+			}
+			if( -1 == bind( Descritor, ultimo->ai_addr, ultimo ->ai_addrlen ) ) {
+				#ifdef DEBUG
+				fprintf( stderr, "\nFalha ao criar socket de ligacao. Tente outro endereco.\n" );
+				#endif // DEBUG
+				close( Descritor );
+				continue;
+			}
+			if( -1 == listen( Descritor, queueSize ) ) {
+				fprintf( stderr, "\nFalha ao iniciar percorrimento e conexao com socket. Tente outro endereco.\n" );
+				close( Descritor );
+			} else {
+				valido = true;
+				std::memcpy( &(endereco), ultimo->ai_addr, ultimo->ai_addrlen );
+				break;
+			}
+		}
+		if( NULL == ultimo ) {
+			fprintf( stderr, "\nNao foi possivel conectar com %s:%s...\n", nome.c_str(), porta.c_str() );
+		}
+	}
+	freeaddrinfo(primeiro);
+	return valido;
+}
+
+bool Socket::Valido() {
+	return valido;
+}
+
+int Socket::getDescritor() {
+	return Descritor;
+}
+
+unsigned int Socket::getFamily() {
+	return endereco.sin_family;
+}
+
+uint16_t Socket::getPorta() {
+	return endereco.sin_port;
+}
+
+uint32_t Socket::getEndereco() {
+	return endereco.sin_addr.s_addr;
+}
+
+std::string Socket::getStringPorta() {
+	return std::to_string( ntohs( endereco.sin_port ) );
+}
+
+std::string Socket::getStringEndereco() {
+	return std::string( inet_ntoa( endereco.sin_addr ) );
+}
+
+bool Socket::operator==( Socket &rhs ) {
+	return Descritor == rhs.Descritor;
+}
+
+
+namespace Inspetor {
 
 
 ///funçoes de requisicao interna
-conexaoInterna::conexaoInterna( int porta ) : porta( porta ), socketPrincipal( -1 ) {
-    errno = 0;
 
-    //criando socket em TCP(socket principal)
-	socketPrincipal = socket( AF_INET, SOCK_STREAM, 0 );
-	if( socketPrincipal < 0 ) {
-		printf( "\nErro na criacao do Socket.\n" );
-	} else {
-		endereco.sin_family = AF_INET;
-		endereco.sin_endereco.s_addr = htonl( INADDR_LOOPBACK );
-		endereco.sin_port = htons( porta );
-		memset( &(endereco.sin_zero), 0, sizeof( endereco.sin_zero ) );
-		//comunicaçao com socket principal
-            if( bind( socketPrincipal, (struct sockaddr *) &endereco, sizeof(endereco) ) < 0 ) {
-                printf( "\nFalha ao tentar comunicar com socket.\n" );
-            } else {
-                FD_ZERO( &active_fd_set );
-                FD_SET( socketPrincipal, &active_fd_set );
-                if( listen( socketPrincipal, QUEUESIZE ) < 0 ) {
-                    printf( "\nFalha ao iniciar conexao.\n" );
-                }
-            }
-        }
+//construtor
+conexaoInterna::conexaoInterna( int porta ) {
+	if( !escutandoSocket.percorre( "127.0.0.1", std::to_string( porta ), QUEUESIZE ) ) {
+		fprintf( stderr, "\nNao foi possivel configurar o socket.\n" );
+	}
 }
 
+//destrutor
 conexaoInterna::~conexaoInterna() {
-	for( int i = conexoes.size() - 1; i >= 0; i-- ) {
-		FD_CLR( conexoes[i].socket, &active_fd_set );
-	}
-
-	if( socketPrincipal >= 0 ) {
-		FD_CLR( socketPrincipal, &active_fd_set );
+	while( socketsConectados.size() > 0 ) {
+		socketsConectados.erase( socketsConectados.end() );
 	}
 }
 
-void conexaoInterna::AceitaErecebe(){
-	    read_fd_set = active_fd_set;
-	    timeout.tv_sec = 0;
-	    timeout.tv_usec = INTLISTENER_TIMEOUT_MS;
+bool conexaoInterna::aceitaConexoes() {
+	if( !escutandoSocket.Valido() )
+		 return false;
+	
+	bool retornaValor = true;
+	struct pollfd auxiliar;
 
-	    //seleçao de sockets
-	    if( select( FD_SETSIZE, &read_fd_set, NULL, NULL, &timeout ) < 0 ) {
-		    printf( "\nNao pode esperar para selecionar Sockets.\n" );
-	    }
+	auxiliar.fd = escutandoSocket.getDescritor();
+	auxiliar.events = POLLIN | POLLPRI;
+	auxiliar.revents = 0;
 
-	    for( int i = 0; i < FD_SETSIZE; i++ ) {
-		    if( FD_ISSET(i, &read_fd_set ) ) {
-			    if( i == socketPrincipal ) {
-				    //Aceitando conexoes
-				    DadosConexao dc;
-				    socklen_t length = sizeof(struct sockaddr_in);
-				    dc.socket = accept( socketPrincipal, (struct sockaddr*) &(dc.endereco), &length );
-				    if( -1 < dc.socket ) {
-					    conexoes.push_back( dc );
-					    FD_SET( dc.socket, &active_fd_set );
-				    } else {
-					    printf( "\nNão foi possível aceitar o soquete.\n" );
-				    }
-			    } else {
-				    //Recebendo dados
-				    int conexaoID;
-				    for( conexaoID = 0; conexaoID< (int) conexoes.size(); conexaoID++ ) {
-					    if( conexoes[conexaoID].socket == i ) break;
-				    }
-
-				    int valorlido = 0;
-					std::string mensagem("");
-					do {
-						char buffer[1024];
-						valorlido = read( i, buffer, sizeof( buffer ) );
-						mensagem += std::string( buffer, valorlido );
-                    } while (1024 == valorlido);
-
-				    if( 0 < valorlido) {
-					    DadosMensagem dm;
-					    dm.mensagem = mensagem
-					    dm.IDconexaoInterna = conexaoID;
-					    dm.endereco_de = std::string( inet_ntoa( conexoes[conexaoID].endereco.sin_addr ) );
-					    dm.porta_de = ntohs( conexoes[conexaoID].endereco.sin_port );;
-					    dm.endereco_para = "127.0.0.1";
-					    dm.porta_para = porta;
-					    mensagensRecebidas.push_back( dm );
-				    } else if( 0 == valorlido ) {
-					    FD_CLR( i, &active_fd_set );
-					    conexoes.erase( conexoes.begin() + conexaoID );
-				    } else {
-					    printf( "\nNao foi possivel ler dados.\n" );
-				    }
-			    }
-		    }
-	    }
-
-}
-
-ssize_t conexaoInterna::Envio( int IDconexao, std::string mensagem ) {
-		if( IDconexao < (int) conexoes.size() ) {
-			ssize_t sent = send( conexoes[IDconexao].socket , mensagem.c_str(), mensagem.length(), 0 );
-			if( sent < 0 ) {
-				printf( "\nNao foi possivel enviar dados.\n" );
-			} else {
-				return sent;
-			}
+	int n = poll( &auxiliar, 1, 0 ); // Verifica se escutandoSocket tem conexoes em aguardo
+	
+	if( n < 0 ) { // n negativo significa erro
+		fprintf( stderr, "\nErro ao fazer polling de escutandoSocket." );
+		retornaValor = false;
+	} else if ( n > 0 ) { // n positivo significa que tem conexoes em aguardo
+		int novoSocketFd = accept( escutandoSocket.getDescritor(), nullptr, nullptr );
+		if( novoSocketFd == -1 ) {
+			fprintf( stderr, "\nNao pode aceitar socket." );
+			retornaValor = false;
 		} else {
-			printf( "\nconexaoID invalida.\n" );
+			socketsConectados.emplace_back( new Socket(novoSocketFd) );
 		}
-	else {
-		printf( "\nNao foi possivel enviar mensagem. A conexao não está em um estado válido para enviar dados.\n" );
+	}
+	return retornaValor;
+}
+
+bool conexaoInterna::recebeRequisicoes() {
+	if( socketsConectados.size() == 0 )
+		return true;
+	
+	bool retornaValor = true;
+	
+	// Lista de pollfds representa cada socket que pode ter atualizacao
+	struct pollfd* auxiliar = new struct pollfd[socketsConectados.size()];
+	for( long int i = 0; i < (long int) socketsConectados.size(); i++ ) {
+		auxiliar[i].fd = socketsConectados[i]->getDescritor();
+		auxiliar[i].events = POLLIN | POLLPRI;
+		auxiliar[i].revents = 0;
+	}
+
+	for( long int i = (long int) socketsConectados.size() - 1; i >= 0; i-- ) {
+		int retornoPoll = poll( auxiliar+i, 1, 0 );
+		if( retornoPoll > 0 && (POLLIN | POLLPRI) & auxiliar[i].revents ) {
+			int valorlido = 0;
+			std::string mensagem("");
+	    	do {
+	    		char buffer[1024] = {0};
+				valorlido = read( socketsConectados[i]->getDescritor(), buffer, sizeof( buffer ) );
+				if( 0 == valorlido ) break;
+				mensagem += std::string( buffer, valorlido );
+				
+				retornoPoll = poll( auxiliar+i, 1, 25 );
+				if( retornoPoll < 0 ) {
+					fprintf( stderr, "\nErro ao fazer polling com socket externo %ld.", i );
+					retornaValor = false;
+	    			}
+	    	} while( retornoPoll > 0 && (POLLIN | POLLPRI) & auxiliar[i].revents );
+			if( valorlido < 0 ) { // Erro ao ler socket
+				fprintf( stderr, "\nNao foi possivel ler dados." );
+				retornaValor = false;
+			} else if( 0 == valorlido ) { // Fechar socket
+				socketsConectados.erase( socketsConectados.begin() + i );
+			} else { // Registra mensagem recebida
+				requisicoesRecebidas.push_back( std::make_tuple( std::weak_ptr< Socket >(socketsConectados[i]), HTTP::Header(mensagem) ) );
+			}
+	    } else if( retornoPoll < 0 ) {
+			fprintf( stderr, "\nErro ao fazer polling com socket externo %ld.", i );
+			retornaValor = false;
+	    }
+	}
+
+	// Desaloca lista de pollfds
+	delete[] auxiliar;
+	return retornaValor;
+}
+
+void conexaoInterna::fechaSocket( int Descritor ) {
+	for( long int i = 0; i < (long int) socketsConectados.size(); i++ ) {
+		if( socketsConectados[i]->getDescritor() == Descritor ) {
+			socketsConectados.erase( socketsConectados.begin() + i );
+			return;
+		}
+	}
+}
+
+ssize_t conexaoInterna::enviaResposta( std::weak_ptr< Socket > recebendoSocket, HTTP::Header resposta ) {
+    if( recebendoSocket.expired() ) {
+    	printf( "\nNao pode enviar dados. Conexao foi fechada.\n" );
+    	return -1;
+    }
+	ssize_t sent = send( recebendoSocket.lock()->getDescritor(), resposta.texto().c_str(), resposta.texto().length(), 0 );
+
+	if( sent < 0 ) {
+		printf( "\nNao foi possivel enviar dados.\n" );
+	} else {
+		return sent;
 	}
 	return -1;
 }
@@ -137,118 +281,136 @@ ssize_t conexaoInterna::Envio( int IDconexao, std::string mensagem ) {
 
 
 ///funçoes de requisicao externa
-conexaoExterna::conexaoExterna(int porta): porta(porta) {
-    errno = 0;
-	FD_ZERO( &active_fd_set );
-}
 
+//construtor
+conexaoExterna::conexaoExterna() {}
+
+//destrutor
 conexaoExterna::~conexaoExterna() {
-	for( int i = conexoes.size() - 1; i >= 0; i-- ) {
-		FD_CLR( conexoes[i].socket, &active_fd_set );
+	while( socketsCriados.size() > 0 ) {
+		socketsCriados.erase( socketsCriados.end() );
 	}
 }
 
-ssize_t conexaoExterna::Envio( int IDconexaoDeInterna, std::string endereco, int porta, std::string mensagem ) {
-	InfoSocket is;
-
-    //auxiliares para tratar gets do http com host em nomes ex:
-    struct addrinfo *auxiliar1, *auxiliar2;
-    struct addrinfo sugestoes;
-
-
-    is.IDconexaoDeInterna = IDconexaoDeInterna;
-
-
-
-	memset(&sugestoes, 0, sizeof(struct addrinfo));
-	sugestoes.auxiliar1_family = AF_INET;
-	sugestoes.auxiliar1_socktype = SOCK_STREAM;
-	sugestoes.auxiliar1_flags = 0;
-	sugestoes.auxiliar1_protocol = 0; /* Any protocol */
-
-	int sugestao = getaddrinfo( endereco.c_str(), std::texto( port ).c_str(), &sugestoes, &auxiliar1 );
-	if( 0 > sugestao ) {
-		printf( "\nErro ao procurar nome.\n" );
-		printf( "getaddrinfo: %s\n", gai_strerror( sugestao ) );
-		return -1;
-	}
-
-	for( auxiliar2 = auxiliar1; auxiliar2 != NULL; auxiliar2 = aauxiliar2->auxiliar1_next ) {
-		std::memcpy( &(is.serv_addr), auxiliar2->auxiliar1_addr, auxiliar2->auxiliar1_addrlen );
-		is.endereco = std::string( inet_ntoa( is.serv_addr.sin_addr ) );
-		is.porta = ntohs( is.serv_addr.sin_port );
-		is.socket = socket(auxiliar2->auxiliar1_family, auxiliar2->auxiliar1_socktype, auxiliar2->auxiliar1_protocol);
-		if( -1 == is.socket ) {
-			printf( "\nFalha ao criar socket. Entre com outro endereco...\n" );
-			continue;
+ssize_t conexaoExterna::enviaRequisicao( std::weak_ptr< Socket > requisitandoSocket, HTTP::Header requisicao ) {
+	parSocket parSocket;
+	int n = acharParSocket(requisitandoSocket);
+	if( -1 == n ) { // Nao encontrou um par
+		Socket* s = new Socket();
+		if( s->conecta( requisicao.host, requisicao.porta ) ) { // Sucesso ao conectar
+			parSocket = std::make_tuple( std::shared_ptr<Socket>(s), requisitandoSocket );
+			socketsCriados.push_back( parSocket );
+		} else { // Falha ao conectar
+			fprintf( stderr, "\nNao foi possivel conectar para enviar requisicao.\n" );
+			delete s;
+			return -1;
 		}
-		if( 0 > connect( is.socket, auxiliar2->auxiliar1_addr, auxiliar2->auxiliar1_addrlen ) ) {
-			printf( "\nFalha ao conectar com socket. Entre com outro endereco...\n" );
-			close( is.socket );
-		} else {
-			break;
-		}
+	} else { // Achou um par
+		parSocket = socketsCriados[n];
 	}
-
-	if( NULL == auxiliar2 ) {
-    printf( "\nNão foi possivel conectar...\n");
-    }else {
-        conexoes.push_back( is );
-        FD_SET( is.socket, &active_fd_set );
-        ssize_t sent = send( is.socket, mensagem.c_str(), mensagem.length(), 0 );
-        if( sent < -1 ) {
-            printf( "\nNão foi possível enviar dados.\n" );
-        } else {
-            freeaddrinfo(auxiliar1);
-            return sent;
-			}
-		}
+	ssize_t sent = send( std::get<0>(parSocket)->getDescritor(), requisicao.texto().c_str(), requisicao.texto().length(), 0 );
+	if( sent < 0 ) {
+		printf( "\nNao foi possivel enviar dados." );
 	}
-    freeaddrinfo(auxiliar1);
-	return -1;
+	return sent;
 }
 
-void conexaoExterna::RecebeMensagens(){
-	read_fd_set = active_fd_set;
-	timeout.tv_sec = 0;
-	timeout.tv_usec = EXTLISTENER_TIMEOUT_MS;
-
-	if( select( FD_SETSIZE, &read_fd_set, NULL, NULL, &timeout ) < 0 ) {
-		printf( "\nNao pode esperar para selecionar Sockets.\n" );
+bool conexaoExterna::recebeRespostas() {
+	arrumarSockets();
+	if( socketsCriados.size() <= 0 )
+		 return true;
+	
+	bool retornaValor = true;
+	
+	// Lista de pollfds representa cada socket que pode ter atualizacao
+	struct pollfd* auxiliar = new struct pollfd[socketsCriados.size()];
+	for( long int i = 0; i < (long int) socketsCriados.size(); i++ ) {
+		auxiliar[i].fd = std::get<0>(socketsCriados[i])->getDescritor();
+		auxiliar[i].events = POLLIN | POLLPRI;
+		auxiliar[i].revents = 0;
 	}
-	for( int i = 0; i < FD_SETSIZE; i++ ) {
-		if( FD_ISSET(i, &read_fd_set ) ) {
-			// Recebendo dados
-			int conexaoID;
-			for( conexaoID = 0; conexaoID < (int) conexoes.size(); conexaoID++ ) {
-				if( conexoes[conexaoID].socket == i ) break;
-			}
+
+	for( long int i = (long int) socketsCriados.size() - 1; i >= 0; i-- ) {
+		int retornoPoll = poll( auxiliar+i, 1, 0 );
+		if( retornoPoll > 0 && (POLLIN | POLLPRI) & auxiliar[i].revents ) {
 			int valorlido = 0;
 			std::string mensagem("");
-			do {
-				char buffer[1024];
-				valorlido = read( i, buffer, sizeof( buffer ) );
+	    	do {
+	    		char buffer[1024] = {0};
+				valorlido = read( std::get<0>(socketsCriados[i])->getDescritor(), buffer, sizeof( buffer ) );
+				if( 0 == valorlido )
+					 break;
 				mensagem += std::string( buffer, valorlido );
-            } while (1024 == valorlido);
-			if( 0 < valorlido) {
-				DadosMensagem dm;
-				dm.mensagem= mensagem
-				dm.IDconexaoInterna = conexoes[conexaoID].IDconexaoDeInterna;
-				dm.endereco_de = conexoes[conexaoID].endereco;
-				dm.porta_de = conexoes[conexaoID].porta;
-				dm.endereco_para = "127.0.0.1";
-				dm.port_para = porta;
-				mensagensRecebidas.push_back( dm );
-			} else if( 0 == valorlido ) {
-				FD_CLR( i, &active_fd_set );
-				conexoes.erase( conexoes.begin() + conexaoID );
-			} else {
-				printf( "\nDados nao puderam ser lidos.\n" );
+				
+				retornoPoll = poll( auxiliar+i, 1, 25 );
+				if( retornoPoll < 0 ) {
+					fprintf( stderr, "\nErro ao fazer polling de socket externo %ld.", i );
+					retornaValor = false;
+	    		}
+	    	} while( retornoPoll > 0 && (POLLIN | POLLPRI) & auxiliar[i].revents );
+			if( valorlido < 0 ) { // Erro ao ler socket
+				fprintf( stderr, "\nNao foi possivel ler dados." );
+				retornaValor = false;
+			} else if( 0 == valorlido ) { // Fechar socket
+				socketsCriados.erase( socketsCriados.begin() + i );
+			} else { // Registra mensagem recebida
+				respostasRecebidas.push_back( std::make_tuple( std::get<1>(socketsCriados[i]), HTTP::Header(mensagem) ) );
+			}
+	    } else if( retornoPoll < 0 ) {
+			fprintf( stderr, "\nErro ao fazer polling socket externo %ld.", i );
+			retornaValor = false;
+	    }
+	}
+
+	// Desaloca lista de pollfds
+	delete[] auxiliar;
+	return retornaValor;
+}
+
+int conexaoExterna::acharParSocket( std::weak_ptr< Socket > s_w_ptr ) {
+	arrumarSockets();
+	if( s_w_ptr.expired() )
+		 return -1;
+	for( long int i = 0; i < (long int) socketsCriados.size(); i++ ) {
+		std::shared_ptr< Socket > inner( std::get<1>(socketsCriados[i]).lock() );
+		std::shared_ptr< Socket > outer( s_w_ptr.lock() );
+		if( inner.get() == outer.get() ) { // Mesmo endereco
+			if( *inner.get() == *outer.get() ) { // Objs identicos
+				return i;
 			}
 		}
+	}
+	return -1; // Nao encontrou
+}
+
+int conexaoExterna::acharParSocket( std::shared_ptr< Socket > s_s_ptr ) {
+	arrumarSockets();
+	if( s_s_ptr.get() == nullptr )
+		 return -1;
+	for( long int i = 0; i < (long int) socketsCriados.size(); i++ ) {
+		if( std::get<0>( socketsCriados[i] ) == s_s_ptr ) { // Sao identicos
+			return i;
+		} else {
+			std::shared_ptr< Socket > inner( std::get<0>(socketsCriados[i]) );
+			if( inner.get() == nullptr ) { // Expirou
+				continue;
+			}
+			if( inner.get() == s_s_ptr.get() ) { // Mesmo endereco
+				if( *inner.get() == *s_s_ptr.get() ) { // Objs identicos
+					return i;
+				}
+			}
+		}
+	}
+	return -1; // Nao encontrou
+}
+
+void conexaoExterna::arrumarSockets() { // Exclui pares cujo o socket interno foi excluido
+	for( long int i = (long int) socketsCriados.size() - 1; i >= 0 ; i-- ) {
+		std::weak_ptr< Socket > s_w_ptr = std::get<1>(socketsCriados[i]);
+		if( s_w_ptr.expired() ) socketsCriados.erase( socketsCriados.begin() + i );
 	}
 }
 
 
-
-};
+}; //fechando namespace Inspetor
