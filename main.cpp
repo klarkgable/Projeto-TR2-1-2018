@@ -20,7 +20,7 @@ int main( int argc, char* argv[] ) {
 	if( 3 == argc ) {
 		if( std::string( argv[1] ) == "-p" ) {
 			try {
-				port = std::stoi( std::string( argv[2] ) );
+				porta = std::stoi( std::string( argv[2] ) );
 			} catch( std::exception e ) {
 				printf( "\nPorta invalida.\n" );
 				return -1;
@@ -34,9 +34,9 @@ int main( int argc, char* argv[] ) {
 		return -1;
 	}
 
-	printf( "\nIniciando aracne com porta# %d\n", porta );
+	printf( "\nIniciando aracne na porta# %d\n", porta );
 
-	ServidorProxy teste1( porta );
+	Inspetor::ServidorProxy teste1( porta );
 
 	while( teste1.Loop() ) {};
 
