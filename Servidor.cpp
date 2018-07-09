@@ -12,48 +12,55 @@
 #include <sys/socket.h>
 
 
-ServidorProxy::ServidorProxy( int porta ) : ci( porta ), ce() {}
+namespace Inspetor {
+
+ServidorProxy::ServidorProxy( int porta ) : continuando(true), requisicoesRecebidas(ci.requisicoesRecebidas), respostasRecebidas(ce.respostasRecebidas), ci( porta ), ce() {}
 
 ServidorProxy::~ServidorProxy() {}
 
 bool ServidorProxy::Loop() {
-    //primeiro(pacotes que saem)
-	ci.AceitaERecebe();
-	if(0 < (int) ci.mensagensRecebidas.size() )
-        printf( "\nTemos %d pacotes saindo.\n", (int) ci.mensagensRecebidas.size() );
-	for( int i = 0; i < (int) ci.mesagensRecebidas.size(); i++ ) {
-        //resgatando parametro do cabeçalho
-        HTTP::Header header( ci.mensagensRecebidas[i].mensagem );
+	/**** Saindo da maquina ****/
+	continuando &= ci.aceitaConexoes();
+	continuando &= ci.recebeRequisicoes();
 
-		printf( "\nMensagem de %s:%d para %s:%d\n%s\n"
-            , ci.mensagensRecebidas[i].endereco_de.c_str()
-			, ci.mensagensRecebidas[i].porta_de
-			, header.host.c_str()
-            , header.porta.c_str()
-			, ci.mensagensRecebidas[i].mensagem.c_str()
-		);
-		ce.Envio( ci.mensagensRecebidas[i].IDconexaoInterna, header.host.c_str(), std::atoi( header.porta.c_str() ), ci.mensagensRecebidas[i].mensagem );
+	// Autoriza requests
+	// (quem deve fazer isso eh a UI, mas esta aqui como placeholder para testes)
+	if( requisicoesRecebidas.size() > 0 ) std::swap( requisicoesRecebidas, requisicoesEnvio );
+
+	// Envia requests
+	if( requisicoesEnvio.size() > 0 ) {
+		printf( "\nEnviando %lu requisicoes.\n", (long int) requisicoesEnvio.size() );
+		for( auto it = requisicoesEnvio.begin(); it != requisicoesEnvio.end(); it++ ) {
+			printf( "\nEnviando para %s:%s...\n%s\n\n", std::get<1>(*it).host.c_str(), std::get<1>(*it).porta.c_str(), std::get<1>(*it).texto(false).c_str() );
+			if( -1 == ce.enviaRequisicao( std::get<0>(*it), std::get<1>(*it) ) ) {
+				fprintf( stderr, "\nNao pode completar envio de dados. Fechando... Tente novamente.\n" );
+				ci.fechaSocket( std::get<0>(*it).lock()->getDescritor() );
+			}
+		}
+		requisicoesEnvio.clear();
 	}
-	ci.mensagensRecebidas.clear();
 
+	/**** Chegando na maquina ****/
+	continuando &= ce.recebeRespostas();
 
-	//por ultimo (pacotes que entram)
-	ce.RecebeMensagens();
-	if(0 < (int) ce.mensagensRecebidas.size() )
-        printf( "\nTemos %d pacotes entrando.\n", (int) ce.mensagensRecebidas.size() );
-	for( int i = 0; i < (int) ce.mensagensRecebidas.size(); i++ ) {
-        //resgatando parametro do cabeçalho
-        HTTP::Header header( ce.mensagensRecebidas[i].mensagem );
+	// Autoriza requests
+	// (quem deve fazer isso eh a UI, mas esta aqui como placeholder para testes)
+	if( respostasRecebidas.size() > 0 ) std::swap( respostasRecebidas, respostasEnvio );
 
-		printf( "\nMensagem de %s:%d para %s:%d\n%s\n"
-			, ci.mensagensRecebidas[i].endereco_de.c_str()
-			, ci.mensagensRecebidas[i].porta_de
-			, header.host.c_str()
-            , header.porta.c_str()
-			, header.texto( false ).c_str()
-		);
-		ci.Envio( ce.mensagensRecebidas[i].IDconexaoInterna, ce.mensagensRecebidas[i].mensagem );
+	// Envia requests
+	if( respostasEnvio.size() > 0 ) {
+		printf( "\nEnviando %lu respostas.\n", (long int) respostasEnvio.size() );
+		for( auto it = respostasEnvio.begin(); it != respostasEnvio.end(); it++ ) {
+			printf( "\nEnviando...\n%s\n\n", std::get<1>(*it).texto(false).c_str() );
+			if( -1 == ci.enviaResposta( std::get<0>(*it), std::get<1>(*it) ) ) {
+				fprintf( stderr, "\nNao pode completar envio de dados. Fechando... Tente novamente.\n" );
+				ci.fechaSocket( std::get<0>(*it).lock()->getDescritor() );
+			}
+		}
+		respostasEnvio.clear();
 	}
-	ce.mensagensRecebidas.clear();
-	return true;
+
+	return continuando;
 }
+
+};//fechando namespace Inspetor
