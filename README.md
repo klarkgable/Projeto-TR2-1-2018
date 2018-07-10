@@ -86,6 +86,10 @@ Sockets
                 exemplo de uso
                         socket (familia, tipo, protocolo);
           O nome de um socket sempre está relacionado a um espaço de nomes, também chamado de domínio (socket domain).Cada espaço de nomes é definido por uma macro na forma PF_* (que vem do termo Protocol Family). Os sockets são divididos em tipos. São eles: SOCK_STREAM, SOCK_DGRAM, SOCK_SEQPACKET, SOCK_RAW, SOCK_RDM, SOCK_PACKET.
+	  
+Servidor Proxy
+
+	Em redes de computadores, um servidor proxy é um servidor que atua como intermediário para solicitações de clientes que buscam recursos de outros servidores. Um cliente se conecta ao servidor proxy, solicitando algum serviço, como um arquivo, conexão, página da web ou outro recurso disponível em um servidor diferente, e o servidor proxy avalia a solicitação como uma maneira de simplificar e controlar sua complexidade. Proxies foram inventados para adicionar estrutura e encapsulamento aos sistemas distribuídos. 
           
           
 *ARQUITETURA DO PROJETO*
