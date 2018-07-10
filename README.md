@@ -278,8 +278,19 @@ class Spider {
 };
        
        
-                
-                
+               
+	      
+*COMO RODAR PROJETO*
+	Para rodar projeto, é bem simples. Sistema usado tem que ser distribuição Linux.
+	Ter instalado o compilador G++ e o Make para rodar o arquivo makefile
+	Passos:
+		1)Baixar arquivos fontes do projeto, copiar para alguma pasta
+		2)Abrir terminal e caminhar até a pasta do projeto(comando CD)
+		3)Rodar arquivo makefile( comando "make -f makefile")
+		4)Será gerado os arquivos objetos e o executável aracne
+		5)Rodar aracne( comando ./aracne) que ele ira rodar na porta 8228 caso não passe outra porta como argumento. Para fazer os requests e responses o navegador web que for utilizar deve ter o proxy configurado no servidorProxy:127.0.0.1 e porta 8228.
+		6)Para rodar o Spider, deve-se comentar a linha final da main.cpp (while( teste1.Loop() ) {};)
+		e setar abaixo a chamada ao Spider com por exemplo Spider("www.sitequalquer.com").
                 
                       
       
