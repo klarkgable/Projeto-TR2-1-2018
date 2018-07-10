@@ -37,6 +37,145 @@ Content-Length: 471
 
 <corpo>
 
+Enviando 1 requisicoes.
+
+Enviando para ocsp.digicert.com:80...
+POST http://ocsp.digicert.com/ HTTP/1.1
+Host: ocsp.digicert.com
+User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:61.0) Gecko/20100101 Firefox/61.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-GB,en;q=0.5
+Accept-Encoding: gzip, deflate
+Content-Length: 83
+Content-Type: application/ocsp-request
+Connection: keep-alive
+
+<corpo>
+
+
+Enviando 1 respostas.
+
+Enviando...
+HTTP/1.1 200 OK
+Accept-Ranges: bytes
+Cache-Control: max-age=162567
+Content-Type: application/ocsp-response
+Date: Tue, 10 Jul 2018 22:34:18 GMT
+Etag: "5b44f7ae-1d7"
+Expires: Thu, 12 Jul 2018 19:13:45 GMT
+Last-Modified: Tue, 10 Jul 2018 18:15:10 GMT
+Server: ECS (cgh/2ADA)
+X-Cache: HIT
+Content-Length: 471
+
+<corpo>
+
+
+Enviando 1 requisicoes.
+
+Enviando para ocsp.digicert.com:80...
+POST http://ocsp.digicert.com/ HTTP/1.1
+Host: ocsp.digicert.com
+User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:61.0) Gecko/20100101 Firefox/61.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-GB,en;q=0.5
+Accept-Encoding: gzip, deflate
+Content-Length: 83
+Content-Type: application/ocsp-request
+Connection: keep-alive
+
+<corpo>
+
+
+Enviando 1 respostas.
+
+Enviando...
+HTTP/1.1 200 OK
+Accept-Ranges: bytes
+Cache-Control: max-age=160766
+Content-Type: application/ocsp-response
+Date: Tue, 10 Jul 2018 22:34:19 GMT
+Etag: "5b44f7ae-1d7"
+Expires: Thu, 12 Jul 2018 19:13:31 GMT
+Last-Modified: Tue, 10 Jul 2018 18:15:10 GMT
+Server: ECS (cgh/2AC9)
+X-Cache: HIT
+Content-Length: 471
+
+<corpo>
+
+
+Enviando 1 requisicoes.
+
+Enviando para ocsp.pki.goog:80...
+POST http://ocsp.pki.goog/GTSGIAG3 HTTP/1.1
+Host: ocsp.pki.goog
+User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:61.0) Gecko/20100101 Firefox/61.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-GB,en;q=0.5
+Accept-Encoding: gzip, deflate
+Content-Length: 75
+Content-Type: application/ocsp-request
+Connection: keep-alive
+
+<corpo>
+
+
+Enviando 1 respostas.
+
+Enviando...
+HTTP/1.1 404 Not Found
+Content-Type: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Date: Tue, 10 Jul 2018 22:34:34 GMT
+Server: ECS (cgh/2A30)
+Content-Length: 345
+
+<corpo>
+
+
+Enviando 1 requisicoes.
+
+Enviando para ocsp.pki.goog:80...
+POST http://ocsp.pki.goog/GTSGIAG3 HTTP/1.1
+Host: ocsp.pki.goog
+User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:61.0) Gecko/20100101 Firefox/61.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-GB,en;q=0.5
+Accept-Encoding: gzip, deflate
+Content-Length: 75
+Content-Type: application/ocsp-request
+Connection: keep-alive
+
+<corpo>
+
+
+Enviando 1 respostas.
+
+Enviando...
+HTTP/1.1 404 Not Found
+Content-Type: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Date: Tue, 10 Jul 2018 22:34:37 GMT
+Server: ECS (cgh/2A30)
+Content-Length: 345
+
+<corpo>
+
+
+Enviando 1 requisicoes.
+
+Enviando para www.sisu.mec.gov.br:80...
+GET http://www.sisu.mec.gov.br/ HTTP/1.1
+Host: www.sisu.mec.gov.br
+User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:61.0) Gecko/20100101 Firefox/61.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-GB,en;q=0.5
+Accept-Encoding: gzip, deflate
+Referer: https://www.google.com/
+Connection: keep-alive
+Upgrade-Insecure-Requests: 1
+
+<corpo>
+
 
 Enviando 1 requisicoes.
 
