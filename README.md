@@ -291,7 +291,7 @@ class Spider {
        
                
 	      
-*COMO RODAR PROJETO*
+*COMO RODAR O PROJETO*
 
 	Para rodar projeto, é bem simples. Sistema usado tem que ser distribuição Linux.
 	Ter instalado o compilador G++ e o Make para rodar o arquivo makefile
