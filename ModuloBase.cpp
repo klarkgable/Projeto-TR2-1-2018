@@ -48,6 +48,10 @@ std::vector< Recurso::Referencia > Recurso::getRecursosReferenciados(){
 	return recursosReferenciados;
 }
 
+std::vector< unsigned long int > Recurso::getReferencias() {
+	return referencias;
+}
+
 bool Recurso::salvar( std::string caminhoRoot ) {
 }
 
@@ -67,6 +71,17 @@ bool Recurso::Valido(){
 	return valido;
 }
 
+
+void Recurso::printaNaArvore( unsigned int nivel, bool ultimo ) {
+	unsigned int i = 0;
+	for( ; i < nivel-1; i++ ) {
+		printf( " %c  ", 179 );
+	}
+	if( i < nivel ) {
+		printf( " %c%c ", ultimo?192:195, 196 );
+	}
+	printf( "%s", nomeLocal.c_str() );
+}
 
 void Recurso::procuraReferencias(const char* propriedadeHTML){
 	std::string propriedade(propriedadeHTML);
@@ -104,7 +119,7 @@ Spider::Spider(std::string host) : sucesso(false), nomeArvoreRoot(host){
 
 	while(!recursosDownload.empty()){
 		contador = (contador+1)%10;
-		if(contadorv == 0){
+		if(contador == 0){
 			printf(".");
 			fflush(stdout);
 		}
@@ -147,6 +162,38 @@ Spider::Spider(std::string host) : sucesso(false), nomeArvoreRoot(host){
 bool Spider::Valido(){
 	return sucesso;
 }
+
+
+void Spider::printaArvoreRecursiva( unsigned long int no, int nivel, bool ultimo, std::set< unsigned long int >& valoresPrintados ) {
+	arvore[no].printaNaArvore( nivel, ultimo );
+	if( valoresPrintados.find( no ) != valoresPrintados.end() ) {
+		printf( " (recursivo.)\n" );
+	} else {
+		printf( "\n" );
+		valoresPrintados.emplace( no );
+		std::vector< unsigned long int > refs = arvore[no].getReferencias();
+		for( unsigned long int i = 0; (long long int) i < (long long int) refs.size()-1; i++ ) {
+			printaArvoreRecursiva( refs[i], nivel+1, false, valoresPrintados );
+		}
+		if( refs.size() > 0 ) printaArvoreRecursiva( refs[refs.size()-1], nivel+1, true, valoresPrintados );
+	}
+}
+
+
+void Spider::printaArvore() {
+	if( arvore.size() == 0 )
+		 return;
+	std::set< unsigned long int > valoresPrintados;
+	printf( "Arvore hipertextual:\n%s (%s)\n", nomeArvoreRoot.c_str(), arvore[0].getNomeLocal().c_str() );
+	valoresPrintados.emplace( 0 );
+	std::vector< unsigned long int > refs = arvore[0].getReferencias();
+	for( unsigned long int i = 0; (long long int) i < (long long int) refs.size()-1; i++ ) {
+		printaArvoreRecursiva( refs[i], 1, false, valoresPrintados );
+	}
+	if( refs.size() > 0 ) printaArvoreRecursiva( refs[refs.size()-1], 1, true, valoresPrintados );
+	printf( "\n" );
+}
+
 
 std::string Spider::recursosBaixados(std::string host, std::string nomeRecurso){
 	int arvores = -1;
