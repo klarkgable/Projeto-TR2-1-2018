@@ -10,118 +10,121 @@ namespace ModuloBase{
 
 
 ///funçoes para recurso que serao usadas no Spider
-Recurso::Recurso( std::string host, std::string nome, std::string respostaHTTP ) : host(host) {
-	int comeco = nome.find( host );
-	nomeLocal = nome.replace( comeco, host.length()+1, "" );
+Recurso::Recurso(std::string host, std::string nome, std::string respostaHTTP) : host(host){
+	int comeco = nome.find(host);
+	nomeLocal = nome.replace(comeco, host.length()+1, "");
 	this->nome = host + "/" + nomeLocal;
 
-	if( nomeLocal.empty() )
+	if(nomeLocal.empty())
         	nomeLocal = "index";
 
-	HTTP::Header header( respostaHTTP );
+	HTTP::Header header(respostaHTTP);
 
 	bool Html = false;
-	for( unsigned int i = 0; i < header.campos.size(); i++ ) {
-		if( std::get<0>( header.campos[i] ) == "Content-Type" ) {
-			Html = std::get<1>( header.campos[i] ).find( "text/html" ) != std::string::npos;
+	for(unsigned int i = 0; i < header.campos.size(); i++){
+		if(std::get<0>(header.campos[i]) == "Content-Type"){
+			Html = std::get<1>(header.campos[i]).find("text/html") != std::string::npos;
 			break;
 		}
 	}
-	if( Html && header.PrimeiraLinha == "HTTP/1.1 200 OK" ) {
+	if(Html && header.PrimeiraLinha == "HTTP/1.1 200 OK"){
 		dados = header.corpo;
-		procuraReferencias( "<a href=\"" );
+		procuraReferencias("<a href=\"");
 		valido = true;
 	} else {
 		valido = false;
 	}
 }
 
-
-std::string Recurso::getNome() {
+std::string Recurso::getNome(){
 	return nome;
 }
 
-std::string Recurso::getNomeLocal() {
+std::string Recurso::getNomeLocal(){
 	return nomeLocal;
 }
 
-std::vector< Recurso::Referencia > Recurso::getRecursosReferenciados() {
+std::vector< Recurso::Referencia > Recurso::getRecursosReferenciados(){
 	return recursosReferenciados;
 }
 
 bool Recurso::salvar( std::string caminhoRoot ) {
 }
 
-
-void Recurso::setaReferencias( std::vector< long long int > refs ) {
-	for( unsigned int i = 0, j = 0; i < refs.size(); i++, j++ ) {
-		if( refs[i] != -1 ) {
-		    referencias.push_back( refs[i] );
-		} else {
-			recursosReferenciados.erase( recursosReferenciados.begin() + j-- );
+void Recurso::setaReferencias(std::vector< long long int > refs){
+	for(unsigned int i = 0, j = 0; i < refs.size(); i++, j++){
+		if(refs[i] != -1){
+		    referencias.push_back(refs[i]);
+		}
+		else{
+			recursosReferenciados.erase(recursosReferenciados.begin() + j--);
 		}
 	}
 }
 
 
-bool Recurso::Valido() {
+bool Recurso::Valido(){
 	return valido;
 }
 
 
-void Recurso::procuraReferencias( const char* propriedadeHTML ) {
-	std::string propriedade( propriedadeHTML );
-	unsigned long long int comeco = dados.find( propriedade );
-	while( comeco != std::string::npos ) {
+void Recurso::procuraReferencias(const char* propriedadeHTML){
+	std::string propriedade(propriedadeHTML);
+	unsigned long long int comeco = dados.find(propriedade);
+	while(comeco != std::string::npos) {
 		comeco += propriedade.length();
-		unsigned long long int fim = dados.find( "\"", comeco );
+		unsigned long long int fim = dados.find("\"", comeco);
 		std::string referencia = dados.substr(comeco, fim - comeco);
 		unsigned long long int achaHost;
-		if( referencia.size() > 1 && referencia[0] == '/' && referencia[1] != '/' ) {
+		if(referencia.size() > 1 && referencia[0] == '/' && referencia[1] != '/'){
 			achaHost = 1;
-		} else if( (achaHost = referencia.find( host ), achaHost != std::string::npos) ) {
+		}
+		else if((achaHost = referencia.find(host), achaHost != std::string::npos)){
 			achaHost += host.length() + 1;
 		}
-		if( achaHost != std::string::npos ) {
-			referencia = achaHost <= referencia.length() ? referencia.substr( achaHost ) : std::string( "" );
-			recursosReferenciados.emplace_back( comeco, fim, referencia );
+		if(achaHost != std::string::npos){
+			referencia = achaHost <= referencia.length() ? referencia.substr(achaHost) : std::string("");
+			recursosReferenciados.emplace_back(comeco, fim, referencia);
 		}
-		comeco = dados.find( propriedade, fim + 2 );
+		comeco = dados.find(propriedade, fim + 2);
 	}
 }
 
-
-
 ///funçoes para Spider
-Spider::Spider( std::string host ) : sucesso(false), nomeArvoreRoot(host) {
-	if( !socket.conecta(host, "80") ) return;
+Spider::Spider(std::string host) : sucesso(false), nomeArvoreRoot(host){
+	if(!socket.conecta(host, "80")){
+		return;
+	}
 	std::queue< std::string > recursosDownload;
-	recursosDownload.push( host );
+	recursosDownload.push(host);
 	short contador= 0;
 
+	printf("Caminhando para %s e computando a arvore", host.c_str());
+	fflush(stdout);
 
-	printf( "Caminhando para %s e computando a arvore", host.c_str() );
-	fflush( stdout );
-
-	while( !recursosDownload.empty() ) {
-		contador= (contador+1)%10;
-		if( contador==0 ) {
-			printf( "." );
-			fflush( stdout );
+	while(!recursosDownload.empty()){
+		contador = (contador+1)%10;
+		if(contadorv == 0){
+			printf(".");
+			fflush(stdout);
 		}
-		if( achaRecursos( recursosDownload.front() ) == -1 ) {
-			std::string dados( recursosBaixados( host, recursosDownload.front() ) );
-			if( dados.empty() ) 
+		if(achaRecursos(recursosDownload.front()) == -1){
+			std::string dados(recursosBaixados(host, recursosDownload.front()));
+			if(dados.empty()){ 
 				return;
-			Recurso r( host, recursosDownload.front(), dados );
-			if( r.Valido() )
+			}
+			Recurso r(host, recursosDownload.front(), dados);
+			if(r.Valido()){
 				 arvore.push_back( r );
+			}
 
 			// Adiciona referencias
 			std::vector< Recurso::Referencia > refs = arvore.back().getRecursosReferenciados();
-			for( unsigned int i = 0; i < refs.size(); i++ ) {
-				std::string proximoRecurso = host + "/" + std::get<2>( refs[i] );
-				if( achaRecursos( proximoRecurso ) == -1 ) recursosDownload.push( proximoRecurso );
+			for(unsigned int i = 0; i < refs.size(); i++){
+				std::string proximoRecurso = host + "/" + std::get<2>(refs[i]);
+				if(achaRecursos(proximoRecurso) == -1){
+					recursosDownload.push(proximoRecurso);
+				}
 			}
 
 		}
@@ -129,36 +132,35 @@ Spider::Spider( std::string host ) : sucesso(false), nomeArvoreRoot(host) {
 	}
 
 	// Acha e seta as referencias na arvore
-	for( unsigned int j = 0; j < arvore.size(); j++ ) {
+	for(unsigned int j = 0; j < arvore.size(); j++){
 		std::vector< Recurso::Referencia > refs = arvore[j].getRecursosReferenciados();
 		std::vector< long long int > achaRefs;
-		for( unsigned int i = 0; i < refs.size(); i++ ) {
-			achaRefs.push_back( achaRecursos( host + "/" + std::get<2>( refs[i] ) ) );
+		for(unsigned int i = 0; i < refs.size(); i++){
+			achaRefs.push_back(achaRecursos(host + "/" + std::get<2>(refs[i])));
 		}
-		arvore[j].setaReferencias( achaRefs );
+		arvore[j].setaReferencias(achaRefs);
 	}
-	printf( "\n" );
+	printf("\n");
 	sucesso = true;
 }
 
-
-bool Spider::Valido() {
+bool Spider::Valido(){
 	return sucesso;
 }
 
-std::string Spider::recursosBaixados( std::string host, std::string nomeRecurso ) {
+std::string Spider::recursosBaixados(std::string host, std::string nomeRecurso){
 	int arvores = -1;
 
 RETRY:
 	arvores++;
-	std::string requisicao( "GET http://" );
+	std::string requisicao("GET http://");
 	requisicao += nomeRecurso;
 	requisicao += " HTTP/1.1\r\nHost: " + host + "\r\nConnection: keep-alive\r\n\r\n";
 
 	// Solicita recurso
-	ssize_t envio = send( socket.getDescritor(), requisicao.c_str(), requisicao.length(), 0 );
-	if( envio < 0 ) {
-		printf( "\nNao foi possivel enviar dados." );
+	ssize_t envio = send(socket.getDescritor(), requisicao.c_str(), requisicao.length(), 0);
+	if(envio < 0){
+		printf("\nNao foi possivel enviar dados.");
 	}
 
 	// Recebe recurso
@@ -167,43 +169,49 @@ RETRY:
 	mestre.events = POLLIN | POLLPRI;
 	mestre.revents = 0;
 	std::string mensagem("");
-	int retornoPoll = poll( &mestre, 1, 250*240 );
-	if( retornoPoll > 0 && (POLLIN | POLLPRI) & mestre.revents ) {
+	int retornoPoll = poll(&mestre, 1, 250*240);
+	if(retornoPoll > 0 && (POLLIN | POLLPRI) & mestre.revents){
 		int valorlido = 0;
-		do {
+		do{
 			char buffer[1024] = {0};
-			valorlido = read( socket.getDescritor(), buffer, sizeof( buffer ) );
-			if( 0 == valorlido ) break;
-			mensagem += std::string( buffer, valorlido );
+			valorlido = read( socket.getDescritor(), buffer, sizeof(buffer));
+			if(valorlido == 0){
+				break;
+			}
+			mensagem += std::string(buffer, valorlido);
 
-			retornoPoll = poll( &mestre, 1, 250 );
-			if( retornoPoll < 0 ) {
-				fprintf( stderr, "\nErro ao fazer polling no scket de spider." );
+			retornoPoll = poll(&mestre, 1, 250);
+			if(retornoPoll < 0) {
+				fprintf(stderr, "\nErro ao fazer polling no scket de spider.");
 				return std::string("");
 			}
-		} while( retornoPoll > 0 && (POLLIN | POLLPRI) & mestre.revents );
-		if( valorlido < 0 ) { // Erro ao ler socket
-			fprintf( stderr, "\nNao foi possivel ler dados." );
+		}while(retornoPoll > 0 && (POLLIN | POLLPRI) & mestre.revents);
+		
+		if(valorlido < 0) { // Erro ao ler socket
+			fprintf(stderr, "\nNao foi possivel ler dados.");
 			return std::string("");
-		} else if( 0 == valorlido ) { // Fechar socket
-			socket = Socket();
-			if( !socket.conecta( host, "80" ) ) return std::string("");
-			if( arvores < 3 )
-                goto RETRY;
 		}
-	} else if( retornoPoll < 0 ) {
-		fprintf( stderr, "\nErro ao fazer polling  no socket spider." );
+		else if(valorlido == 0) { // Fechar socket
+			socket = Socket();
+			if(!socket.conecta(host, "80")){
+				return std::string("");
+			}
+			if(arvores < 3){
+                goto RETRY;
+			}
+		}
+	}
+	else if(retornoPoll < 0){
+		fprintf(stderr, "\nErro ao fazer polling  no socket spider.");
 		return std::string("");
 	}
 	return mensagem;
 }
 
-long long int Spider::achaRecursos( std::string nomeRecurso ) {
-	for( unsigned long int i = 0; i < arvore.size(); i++ ) {
-		if( arvore[i].getNome() == nomeRecurso ) return i;
+long long int Spider::achaRecursos(std::string nomeRecurso){
+	for(unsigned long int i = 0; i < arvore.size(); i++){
+		if(arvore[i].getNome() == nomeRecurso ) return i;
 	}
 	return -1;
 }
-
-
 };
