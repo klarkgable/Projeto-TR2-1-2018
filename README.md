@@ -88,6 +88,198 @@ Sockets
           O nome de um socket sempre está relacionado a um espaço de nomes, também chamado de domínio (socket domain).Cada espaço de nomes é definido por uma macro na forma PF_* (que vem do termo Protocol Family). Os sockets são divididos em tipos. São eles: SOCK_STREAM, SOCK_DGRAM, SOCK_SEQPACKET, SOCK_RAW, SOCK_RDM, SOCK_PACKET.
           
           
+*ARQUITETURA DO PROJETO*
 
+        O projeto foi feito em C++, usando API padrões e várias bibliotecas de suporte para aplicações em redes. Foi feito em C++, pois acreditamos que na visão orientada a objetos seria melhor estruturado o trabalho e a comunicação entre classes através dos seus respectivos módulos dariam uma visão mais tangível e simples de entender e interagir.
+       Para isso, dividimos o projeto em vários módulos:
+                Servidor(módulo para servidorProxy, por onde passam as requisições e respostas)
+                Conexao( módulo geral para sockets e conexao interna e externa)
+                Header( responsavél por setar ou recuperar cabeçahos HTTP de requisição ou resposta)
+                       Obs: os modulos conexao e servidor em conjunto e utilizando das funções do Header, formam o Inspetor HTTP
+                ModuloBase( Serve como base para recursos, Spider e dump)
+                main(É o módulo principal que chama as rotinas, e seleciona entre inspeção, spider ou cliente recursivo)
+       
+       Para definição das funções e estruturas do projeto, temos o módulo Estrutura.h, que contem:
+
+
+        ///classe para Sockets
+class Socket {
+public:
+	Socket();
+	Socket( int Descritor );
+	~Socket();
+
+	//funçoes para atribuiçao padrao para sockets
+	bool conecta( std::string nome, std::string porta, int socketFamily = AF_INET, int socketType = SOCK_STREAM, int protocol = 0 );
+	bool percorre( std::string nome, std::string porta, int queueSize = 1, int socketFamily = AF_INET, int socketType = SOCK_STREAM, int protocol = 0 );
+
+	bool Valido();
+	int getDescritor();
+	unsigned int getFamily();
+	uint16_t getPorta();
+	uint32_t getEndereco();
+	std::string getStringPorta();
+	std::string getStringEndereco();
+	
+	bool operator==( Socket &rhs );
+private:
+	bool valido;
+	int Descritor;
+	struct sockaddr_in endereco;
+};
+
+
+namespace HTTP {
+///definição das estruturas e funções do Header
+
+    //Uma´unica estrutura para cabeçalho http que identifica e separa os campos para tratar de requisiçao e resposta
+    struct Header {
+
+        //metodo para separar os campos
+        Header( std::string& palavra );
+
+        //metodo que transforma struct para string para envio na rede
+            std::string texto( bool incluiCorpo = true );
+
+        //primeira linha e campos http
+            std::string PrimeiraLinha;
+            std::vector< field > campos;
+
+        //corpo da mensagem http
+            std::string corpo;
+
+        // caminho e porta
+            std::string host;
+            std::string porta;
+    };
+
+};
+
+
+namespace Inspetor {
+
+///definiçoes das estruturas e funções de conexao interna
+class conexaoInterna {
+
+    public:
+        conexaoInterna( int porta );
+        ~conexaoInterna();
+	typedef std::tuple< std::weak_ptr< Socket >, HTTP::Header > Requisicao;
+
+
+	bool aceitaConexoes();
+	bool recebeRequisicoes();
+	void fechaSocket( int Descritor );
+ssize_t enviaResposta( std::weak_ptr< Socket > recebendoSocket, HTTP::Header resposta );
+
+	std::vector< Requisicao > requisicoesRecebidas;	
+
+    private:
+	Socket escutandoSocket;
+	std::vector< std::shared_ptr< Socket > > socketsConectados;
+
+    };
+
+
+///definiçoes das estruturas e funções de conexao externa
+class conexaoExterna {
+    public:
+        conexaoExterna(int porta);
+	conexaoExterna();
+        ~conexaoExterna();
+	typedef std::tuple< std::weak_ptr< Socket >, HTTP::Header > Resposta;
+
+	ssize_t enviaRequisicao( std::weak_ptr< Socket > requisitandoSocket, HTTP::Header requisicao );
+	bool recebeRespostas();
+
+	std::vector< Resposta > respostasRecebidas;
+	
+    private:
+        typedef std::tuple< std::shared_ptr< Socket >,std::weak_ptr< Socket > > parSocket;
+	int acharParSocket( std::weak_ptr< Socket > s_w_ptr );
+	int acharParSocket( std::shared_ptr< Socket > s_s_ptr );
+	void arrumarSockets();
+
+	std::vector< parSocket > socketsCriados;
+    };
+
+
+///definição das estruturas e funções do Servidor Proxy
+
+class ServidorProxy {
+
+    public:
+        ServidorProxy( int porta );
+        ~ServidorProxy();
+        bool Loop();
+
+	bool continuando;
+	std::vector< conexaoInterna::Requisicao > &requisicoesRecebidas;
+	std::vector< conexaoInterna::Requisicao > requisicoesEnvio;
+	std::vector< conexaoExterna::Resposta > &respostasRecebidas;
+	std::vector< conexaoExterna::Resposta > respostasEnvio;
+
+    private:
+        conexaoInterna ci;
+        conexaoExterna ce;
+  };
+
+
+};
+
+
+///definição das estruturas e funções do Spider e Cliente recursivo
+
+namespace ModuloBase{
+
+
+struct Recurso {
+
+	public:
+		typedef std::tuple< unsigned long long int, unsigned long long int, std::string > Referencia;
+		Recurso( std::string host, std::string nome, std::string respostaHTTP );
+	
+		std::string getNome();
+		std::string getNomeLocal();
+		std::vector< Referencia > getRecursosReferenciados();
+		void setaReferencias( std::vector< long long int > refs );
+		bool salvar( std::string caminhoRoot );
+		bool Valido();
+
+		
+	private:
+		void procuraReferencias( const char* propriedadeHTML );
+		std::string host;
+		std::string nome;
+		std::string nomeLocal;
+		std::string dados;
+		std::vector< Referencia > recursosReferenciados;
+		std::vector< unsigned long int > referencias;
+		bool valido;
+
+};
+
+
+class Spider {
+	public:
+		Spider( std::string host );
+		bool Valido();
+	private:
+		std::string recursosBaixados( std::string host, std::string nomeRecurso );
+		long long int achaRecursos( std::string nomeRecurso );
+	
+		Socket socket;
+		bool sucesso;
+		std::string nomeArvoreRoot;
+		std::vector< Recurso > arvore;
+};
+
+
+};
+       
+       
+                
+                
+                
                       
       
