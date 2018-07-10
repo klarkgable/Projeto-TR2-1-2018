@@ -205,4 +205,92 @@ Content-Length: 345
 <corpo>
 
 
+Enviando 1 requisicoes.
 
+Enviando para intervox.nce.ufrj.br:80...
+GET http://intervox.nce.ufrj.br/~diniz/d/prin.htm HTTP/1.1
+Host: intervox.nce.ufrj.br
+User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:61.0) Gecko/20100101 Firefox/61.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-GB,en;q=0.5
+Accept-Encoding: gzip, deflate
+Referer: http://intervox.nce.ufrj.br/~diniz/d/
+Connection: keep-alive
+Upgrade-Insecure-Requests: 1
+
+<corpo>
+
+
+Enviando 2 respostas.
+
+Enviando...
+HTTP/1.1 200 OK
+Date: Tue, 10 Jul 2018 23:52:53 GMT
+Server: Apache
+Last-Modified: Fri, 24 Dec 2004 22:47:15 GMT
+Accept-Ranges: bytes
+Vary: Accept-Encoding
+Content-Encoding: gzip
+Content-Length: 282
+Keep-Alive: timeout=5, max=100
+Connection: Keep-Alive
+Content-Type: text/html
+
+<corpo>
+
+
+Enviando...
+HTTP/1.1 200 OK
+Date: Tue, 10 Jul 2018 23:52:53 GMT
+Server: Apache
+Last-Modified: Fri, 24 Dec 2004 22:26:48 GMT
+Accept-Ranges: bytes
+Vary: Accept-Encoding
+Content-Encoding: gzip
+Content-Length: 333
+Keep-Alive: timeout=5, max=99
+Connection: Keep-Alive
+Content-Type: text/html
+
+<corpo>
+
+Enviando 3 requisicoes.
+
+Enviando para intervox.nce.ufrj.br:80...
+GET http://intervox.nce.ufrj.br/~diniz/d/diniz.jpg HTTP/1.1
+Host: intervox.nce.ufrj.br
+User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:61.0) Gecko/20100101 Firefox/61.0
+Accept: */*
+Accept-Language: en-GB,en;q=0.5
+Accept-Encoding: gzip, deflate
+Referer: http://intervox.nce.ufrj.br/~diniz/d/prin.htm
+Connection: keep-alive
+
+<corpo>
+
+
+Enviando para www.cutandpastescripts.com:80...
+GET http://www.cutandpastescripts.com/cgi-bin/textcounter/textcounter2.pl?username=diniz&page=86229 HTTP/1.1
+Host: www.cutandpastescripts.com
+User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:61.0) Gecko/20100101 Firefox/61.0
+Accept: */*
+Accept-Language: en-GB,en;q=0.5
+Accept-Encoding: gzip, deflate
+Referer: http://intervox.nce.ufrj.br/~diniz/d/prin.htm
+Connection: keep-alive
+
+<corpo>
+
+
+Enviando para www.supertrafego.com:80...
+GET http://www.supertrafego.com/trocalinks_view.asp?id=44940&cat=07&fonte=FFFFFF&fundo=000000 HTTP/1.1
+Host: www.supertrafego.com
+User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:61.0) Gecko/20100101 Firefox/61.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-GB,en;q=0.5
+Accept-Encoding: gzip, deflate
+Referer: http://intervox.nce.ufrj.br/~diniz/d/prin.htm
+Connection: keep-alive
+Upgrade-Insecure-Requests: 1
+
+<corpo>
