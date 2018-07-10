@@ -1,0 +1,543 @@
+klark@klark-VirtualBox:~$ cd Downloads
+klark@klark-VirtualBox:~/Downloads$ cd InspetorHTTP_teste
+klark@klark-VirtualBox:~/Downloads/InspetorHTTP_teste$ ./aracne
+
+Iniciando aracne na porta# 8228
+
+Enviando 1 requisicoes.
+
+Enviando para ocsp.digicert.com:80...
+POST http://ocsp.digicert.com/ HTTP/1.1
+Host: ocsp.digicert.com
+User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:61.0) Gecko/20100101 Firefox/61.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-GB,en;q=0.5
+Accept-Encoding: gzip, deflate
+Content-Length: 83
+Content-Type: application/ocsp-request
+Connection: keep-alive
+
+<corpo>
+
+
+Enviando 1 respostas.
+
+Enviando...
+HTTP/1.1 200 OK
+Accept-Ranges: bytes
+Cache-Control: max-age=165063
+Content-Type: application/ocsp-response
+Date: Tue, 10 Jul 2018 04:34:52 GMT
+Etag: "5b43e582-1d7"
+Expires: Thu, 12 Jul 2018 02:13:53 GMT
+Last-Modified: Mon, 09 Jul 2018 22:45:22 GMT
+Server: ECS (cgh/2A30)
+X-Cache: HIT
+Content-Length: 471
+
+<corpo>
+
+
+Enviando 1 requisicoes.
+
+Enviando para detectportal.firefox.com:80...
+GET http://detectportal.firefox.com/success.txt HTTP/1.1
+Host: detectportal.firefox.com
+User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:61.0) Gecko/20100101 Firefox/61.0
+Accept: */*
+Accept-Language: en-GB,en;q=0.5
+Accept-Encoding: gzip, deflate
+Cache-Control: no-cache
+Pragma: no-cache
+Connection: keep-alive
+
+<corpo>
+
+
+Enviando 1 respostas.
+
+Enviando...
+HTTP/1.1 404 Not Found
+Content-Type: text/html
+Date: Tue, 10 Jul 2018 04:34:54 GMT
+Server: ECS (cgh/2A6A)
+Content-Length: 345
+
+<corpo>
+
+
+Enviando 1 requisicoes.
+
+Enviando para detectportal.firefox.com:80...
+GET http://detectportal.firefox.com/success.txt HTTP/1.1
+Host: detectportal.firefox.com
+User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:61.0) Gecko/20100101 Firefox/61.0
+Accept: */*
+Accept-Language: en-GB,en;q=0.5
+Accept-Encoding: gzip, deflate
+Cache-Control: no-cache
+Pragma: no-cache
+Connection: keep-alive
+
+<corpo>
+
+
+Enviando 1 respostas.
+
+Enviando...
+HTTP/1.1 404 Not Found
+Content-Type: text/html
+Date: Tue, 10 Jul 2018 04:34:54 GMT
+Server: ECS (cgh/2A6A)
+Content-Length: 345
+
+<corpo>
+
+
+Enviando 1 requisicoes.
+
+Enviando para detectportal.firefox.com:80...
+GET http://detectportal.firefox.com/success.txt HTTP/1.1
+Host: detectportal.firefox.com
+User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:61.0) Gecko/20100101 Firefox/61.0
+Accept: */*
+Accept-Language: en-GB,en;q=0.5
+Accept-Encoding: gzip, deflate
+Cache-Control: no-cache
+Pragma: no-cache
+Connection: keep-alive
+
+<corpo>
+
+
+Enviando 1 respostas.
+
+Enviando...
+HTTP/1.1 404 Not Found
+Content-Type: text/html
+Date: Tue, 10 Jul 2018 04:34:54 GMT
+Server: ECS (cgh/2A6A)
+Content-Length: 345
+
+<corpo>
+
+
+Enviando 1 requisicoes.
+
+Enviando para detectportal.firefox.com:80...
+GET http://detectportal.firefox.com/success.txt HTTP/1.1
+Host: detectportal.firefox.com
+User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:61.0) Gecko/20100101 Firefox/61.0
+Accept: */*
+Accept-Language: en-GB,en;q=0.5
+Accept-Encoding: gzip, deflate
+Cache-Control: no-cache
+Pragma: no-cache
+Connection: keep-alive
+
+<corpo>
+
+
+Enviando 1 respostas.
+
+Enviando...
+HTTP/1.1 404 Not Found
+Content-Type: text/html
+Date: Tue, 10 Jul 2018 04:34:54 GMT
+Server: ECS (cgh/2A6A)
+Content-Length: 345
+
+<corpo>
+
+
+Enviando 1 requisicoes.
+
+Enviando para detectportal.firefox.com:80...
+GET http://detectportal.firefox.com/success.txt HTTP/1.1
+Host: detectportal.firefox.com
+User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:61.0) Gecko/20100101 Firefox/61.0
+Accept: */*
+Accept-Language: en-GB,en;q=0.5
+Accept-Encoding: gzip, deflate
+Cache-Control: no-cache
+Pragma: no-cache
+Connection: keep-alive
+
+<corpo>
+
+
+Enviando 1 respostas.
+
+Enviando...
+HTTP/1.1 404 Not Found
+Content-Type: text/html
+Date: Tue, 10 Jul 2018 04:34:54 GMT
+Server: ECS (cgh/2A6A)
+Content-Length: 345
+
+<corpo>
+
+
+Enviando 1 requisicoes.
+
+Enviando para detectportal.firefox.com:80...
+GET http://detectportal.firefox.com/success.txt HTTP/1.1
+Host: detectportal.firefox.com
+User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:61.0) Gecko/20100101 Firefox/61.0
+Accept: */*
+Accept-Language: en-GB,en;q=0.5
+Accept-Encoding: gzip, deflate
+Cache-Control: no-cache
+Pragma: no-cache
+Connection: keep-alive
+
+<corpo>
+
+
+Enviando 1 respostas.
+
+Enviando...
+HTTP/1.1 404 Not Found
+Content-Type: text/html
+Date: Tue, 10 Jul 2018 04:34:54 GMT
+Server: ECS (cgh/2A6A)
+Content-Length: 345
+
+<corpo>
+
+
+Enviando 1 requisicoes.
+
+Enviando para detectportal.firefox.com:80...
+GET http://detectportal.firefox.com/success.txt HTTP/1.1
+Host: detectportal.firefox.com
+User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:61.0) Gecko/20100101 Firefox/61.0
+Accept: */*
+Accept-Language: en-GB,en;q=0.5
+Accept-Encoding: gzip, deflate
+Cache-Control: no-cache
+Pragma: no-cache
+Connection: keep-alive
+
+<corpo>
+
+
+Enviando 1 respostas.
+
+Enviando...
+HTTP/1.1 404 Not Found
+Content-Type: text/html
+Date: Tue, 10 Jul 2018 04:35:54 GMT
+Server: ECS (cgh/2A6A)
+Content-Length: 345
+
+<corpo>
+
+
+Enviando 1 requisicoes.
+
+Enviando para detectportal.firefox.com:80...
+GET http://detectportal.firefox.com/success.txt HTTP/1.1
+Host: detectportal.firefox.com
+User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:61.0) Gecko/20100101 Firefox/61.0
+Accept: */*
+Accept-Language: en-GB,en;q=0.5
+Accept-Encoding: gzip, deflate
+Cache-Control: no-cache
+Pragma: no-cache
+Connection: keep-alive
+
+<corpo>
+
+
+Enviando 1 respostas.
+
+Enviando...
+HTTP/1.1 404 Not Found
+Content-Type: text/html
+Date: Tue, 10 Jul 2018 04:35:54 GMT
+Server: ECS (cgh/2A6A)
+Content-Length: 345
+
+<corpo>
+
+
+Enviando 1 requisicoes.
+
+Enviando para detectportal.firefox.com:80...
+GET http://detectportal.firefox.com/success.txt HTTP/1.1
+Host: detectportal.firefox.com
+User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:61.0) Gecko/20100101 Firefox/61.0
+Accept: */*
+Accept-Language: en-GB,en;q=0.5
+Accept-Encoding: gzip, deflate
+Cache-Control: no-cache
+Pragma: no-cache
+Connection: keep-alive
+
+<corpo>
+
+
+Enviando 1 respostas.
+
+Enviando...
+HTTP/1.1 404 Not Found
+Content-Type: text/html
+Date: Tue, 10 Jul 2018 04:35:54 GMT
+Server: ECS (cgh/2A6A)
+Content-Length: 345
+
+<corpo>
+
+
+Enviando 1 requisicoes.
+
+Enviando para detectportal.firefox.com:80...
+GET http://detectportal.firefox.com/success.txt HTTP/1.1
+Host: detectportal.firefox.com
+User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:61.0) Gecko/20100101 Firefox/61.0
+Accept: */*
+Accept-Language: en-GB,en;q=0.5
+Accept-Encoding: gzip, deflate
+Cache-Control: no-cache
+Pragma: no-cache
+Connection: keep-alive
+
+<corpo>
+
+
+Enviando 1 respostas.
+
+Enviando...
+HTTP/1.1 404 Not Found
+Content-Type: text/html
+Date: Tue, 10 Jul 2018 04:35:54 GMT
+Server: ECS (cgh/2A6A)
+Content-Length: 345
+
+<corpo>
+
+
+Enviando 1 requisicoes.
+
+Enviando para detectportal.firefox.com:80...
+GET http://detectportal.firefox.com/success.txt HTTP/1.1
+Host: detectportal.firefox.com
+User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:61.0) Gecko/20100101 Firefox/61.0
+Accept: */*
+Accept-Language: en-GB,en;q=0.5
+Accept-Encoding: gzip, deflate
+Cache-Control: no-cache
+Pragma: no-cache
+Connection: keep-alive
+
+<corpo>
+
+
+Enviando 1 respostas.
+
+Enviando...
+HTTP/1.1 404 Not Found
+Content-Type: text/html
+Date: Tue, 10 Jul 2018 04:35:54 GMT
+Server: ECS (cgh/2A6A)
+Content-Length: 345
+
+<corpo>
+
+
+Enviando 1 requisicoes.
+
+Enviando para detectportal.firefox.com:80...
+GET http://detectportal.firefox.com/success.txt HTTP/1.1
+Host: detectportal.firefox.com
+User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:61.0) Gecko/20100101 Firefox/61.0
+Accept: */*
+Accept-Language: en-GB,en;q=0.5
+Accept-Encoding: gzip, deflate
+Cache-Control: no-cache
+Pragma: no-cache
+Connection: keep-alive
+
+<corpo>
+
+
+Enviando 1 respostas.
+
+Enviando...
+HTTP/1.1 404 Not Found
+Content-Type: text/html
+Date: Tue, 10 Jul 2018 04:35:54 GMT
+Server: ECS (cgh/2A6A)
+Content-Length: 345
+
+<corpo>
+
+
+Enviando 1 requisicoes.
+
+Enviando para detectportal.firefox.com:80...
+GET http://detectportal.firefox.com/success.txt HTTP/1.1
+Host: detectportal.firefox.com
+User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:61.0) Gecko/20100101 Firefox/61.0
+Accept: */*
+Accept-Language: en-GB,en;q=0.5
+Accept-Encoding: gzip, deflate
+Cache-Control: no-cache
+Pragma: no-cache
+Connection: keep-alive
+
+<corpo>
+
+
+Enviando 1 respostas.
+
+Enviando...
+HTTP/1.1 404 Not Found
+Content-Type: text/html
+Date: Tue, 10 Jul 2018 04:36:54 GMT
+Server: ECS (cgh/2A6A)
+Content-Length: 345
+
+<corpo>
+
+
+Enviando 1 requisicoes.
+
+Enviando para detectportal.firefox.com:80...
+GET http://detectportal.firefox.com/success.txt HTTP/1.1
+Host: detectportal.firefox.com
+User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:61.0) Gecko/20100101 Firefox/61.0
+Accept: */*
+Accept-Language: en-GB,en;q=0.5
+Accept-Encoding: gzip, deflate
+Cache-Control: no-cache
+Pragma: no-cache
+Connection: keep-alive
+
+<corpo>
+
+
+Enviando 1 respostas.
+
+Enviando...
+HTTP/1.1 404 Not Found
+Content-Type: text/html
+Date: Tue, 10 Jul 2018 04:36:54 GMT
+Server: ECS (cgh/2A6A)
+Content-Length: 345
+
+<corpo>
+
+
+Enviando 1 requisicoes.
+
+Enviando para detectportal.firefox.com:80...
+GET http://detectportal.firefox.com/success.txt HTTP/1.1
+Host: detectportal.firefox.com
+User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:61.0) Gecko/20100101 Firefox/61.0
+Accept: */*
+Accept-Language: en-GB,en;q=0.5
+Accept-Encoding: gzip, deflate
+Cache-Control: no-cache
+Pragma: no-cache
+Connection: keep-alive
+
+<corpo>
+
+
+Enviando 1 respostas.
+
+Enviando...
+HTTP/1.1 404 Not Found
+Content-Type: text/html
+Date: Tue, 10 Jul 2018 04:36:54 GMT
+Server: ECS (cgh/2A6A)
+Content-Length: 345
+
+<corpo>
+
+
+Enviando 1 requisicoes.
+
+Enviando para detectportal.firefox.com:80...
+GET http://detectportal.firefox.com/success.txt HTTP/1.1
+Host: detectportal.firefox.com
+User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:61.0) Gecko/20100101 Firefox/61.0
+Accept: */*
+Accept-Language: en-GB,en;q=0.5
+Accept-Encoding: gzip, deflate
+Cache-Control: no-cache
+Pragma: no-cache
+Connection: keep-alive
+
+<corpo>
+
+
+Enviando 1 respostas.
+
+Enviando...
+HTTP/1.1 404 Not Found
+Content-Type: text/html
+Date: Tue, 10 Jul 2018 04:36:54 GMT
+Server: ECS (cgh/2A6A)
+Content-Length: 345
+
+<corpo>
+
+
+Enviando 1 requisicoes.
+
+Enviando para detectportal.firefox.com:80...
+GET http://detectportal.firefox.com/success.txt HTTP/1.1
+Host: detectportal.firefox.com
+User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:61.0) Gecko/20100101 Firefox/61.0
+Accept: */*
+Accept-Language: en-GB,en;q=0.5
+Accept-Encoding: gzip, deflate
+Cache-Control: no-cache
+Pragma: no-cache
+Connection: keep-alive
+
+<corpo>
+
+
+Enviando 1 respostas.
+
+Enviando...
+HTTP/1.1 404 Not Found
+Content-Type: text/html
+Date: Tue, 10 Jul 2018 04:36:54 GMT
+Server: ECS (cgh/2A6A)
+Content-Length: 345
+
+<corpo>
+
+
+Enviando 1 requisicoes.
+
+Enviando para detectportal.firefox.com:80...
+GET http://detectportal.firefox.com/success.txt HTTP/1.1
+Host: detectportal.firefox.com
+User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:61.0) Gecko/20100101 Firefox/61.0
+Accept: */*
+Accept-Language: en-GB,en;q=0.5
+Accept-Encoding: gzip, deflate
+Cache-Control: no-cache
+Pragma: no-cache
+Connection: keep-alive
+
+<corpo>
+
+
+Enviando 1 respostas.
+
+Enviando...
+HTTP/1.1 404 Not Found
+Content-Type: text/html
+Date: Tue, 10 Jul 2018 04:36:54 GMT
+Server: ECS (cgh/2A6A)
+Content-Length: 345
+
+<corpo>
+
