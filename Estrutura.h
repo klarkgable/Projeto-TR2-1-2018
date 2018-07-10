@@ -16,6 +16,7 @@
 #include <memory>
 #include <tuple>
 #include <poll.h>
+#include <queue>
 #include <unistd.h>
 #include <netdb.h>
 #include <inttypes.h>
@@ -153,6 +154,52 @@ class ServidorProxy {
 
 
 };//fechando namespace Inspetor
+
+
+///definição das estruturas e funções do Spider e Cliente recursivo
+
+namespace ModuloBase{
+
+
+struct Recurso {
+
+	public:
+		typedef std::tuple< unsigned long long int, unsigned long long int, std::string > Referencia;
+		Recurso( std::string host, std::string nome, std::string respostaHTTP );
+	
+		std::string getNome();
+		std::string getNomeLocal();
+		std::vector< Referencia > getRecursosReferenciados();
+		bool salvar( std::string caminhoRoot );
+
+		std::vector< unsigned long int > referencias;
+	private:
+		void procuraReferencias( const char* propriedadeHTML );
+		std::string host;
+		std::string nome;
+		std::string nomeLocal;
+		std::string dados;
+		std::vector< Referencia > recursosReferenciados;
+};
+
+
+class Spider {
+	public:
+		Spider( std::string host );
+		bool Valido();
+	private:
+		std::string recursosBaixados( std::string host, std::string nomeRecurso );
+		long long int achaRecursos( std::string nomeRecurso );
+	
+		Socket socket;
+		bool sucesso;
+		std::string nomeArvoreRoot;
+		std::vector< Recurso > arvore;
+};
+
+
+};//fechando namespace ModuloBase
+
 
 
 #endif // ESTRUTURA_H_INCLUDED
