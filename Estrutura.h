@@ -19,6 +19,7 @@
 #include <tuple>
 #include <poll.h>
 #include <queue>
+#include <set>
 #include <unistd.h>
 #include <netdb.h>
 #include <inttypes.h>
@@ -173,8 +174,11 @@ struct Recurso {
 		std::string getNomeLocal();
 		std::vector< Referencia > getRecursosReferenciados();
 		void setaReferencias( std::vector< long long int > refs );
+		std::vector< unsigned long int > getReferencias();
 		bool salvar( std::string caminhoRoot );
+		void printaNaArvore( unsigned int nivel, bool ultimo );		
 		bool Valido();
+
 
 		
 	private:
@@ -193,11 +197,13 @@ struct Recurso {
 class Spider {
 	public:
 		Spider( std::string host );
+		void printaArvore();
 		bool Valido();
 	private:
 		std::string recursosBaixados( std::string host, std::string nomeRecurso );
 		long long int achaRecursos( std::string nomeRecurso );
 	
+		void printaArvoreRecursiva( unsigned long int no, int nivel, bool ultimo, std::set< unsigned long int >& valoresPrintados );
 		Socket socket;
 		bool sucesso;
 		std::string nomeArvoreRoot;
