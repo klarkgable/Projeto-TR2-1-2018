@@ -19,12 +19,11 @@ ServidorProxy::ServidorProxy( int porta ) : continuando(true), requisicoesRecebi
 ServidorProxy::~ServidorProxy() {}
 
 bool ServidorProxy::Loop() {
-	/**** Saindo da maquina ****/
+	
 	continuando &= ci.aceitaConexoes();
 	continuando &= ci.recebeRequisicoes();
 
 	// Autoriza requests
-	// (quem deve fazer isso eh a UI, mas esta aqui como placeholder para testes)
 	if( requisicoesRecebidas.size() > 0 ) std::swap( requisicoesRecebidas, requisicoesEnvio );
 
 	// Envia requests
@@ -40,11 +39,9 @@ bool ServidorProxy::Loop() {
 		requisicoesEnvio.clear();
 	}
 
-	/**** Chegando na maquina ****/
 	continuando &= ce.recebeRespostas();
 
 	// Autoriza requests
-	// (quem deve fazer isso eh a UI, mas esta aqui como placeholder para testes)
 	if( respostasRecebidas.size() > 0 ) std::swap( respostasRecebidas, respostasEnvio );
 
 	// Envia requests
