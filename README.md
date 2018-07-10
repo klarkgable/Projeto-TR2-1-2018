@@ -91,13 +91,20 @@ Sockets
 *ARQUITETURA DO PROJETO*
 
         O projeto foi feito em C++, usando API padrões e várias bibliotecas de suporte para aplicações em redes. Foi feito em C++, pois acreditamos que na visão orientada a objetos seria melhor estruturado o trabalho e a comunicação entre classes através dos seus respectivos módulos dariam uma visão mais tangível e simples de entender e interagir.
+	
        Para isso, dividimos o projeto em vários módulos:
-                Servidor(módulo para servidorProxy, por onde passam as requisições e respostas)
-                Conexao( módulo geral para sockets e conexao interna e externa)
-                Header( responsavél por setar ou recuperar cabeçahos HTTP de requisição ou resposta)
+       
+                
+		Servidor(módulo para servidorProxy, por onde passam as requisições e respostas)
+                
+		Conexao( módulo geral para sockets e conexao interna e externa)
+                
+		Header( responsavél por setar ou recuperar cabeçahos HTTP de requisição ou resposta)
                        Obs: os modulos conexao e servidor em conjunto e utilizando das funções do Header, formam o Inspetor HTTP
-                ModuloBase( Serve como base para recursos, Spider e dump)
-                main(É o módulo principal que chama as rotinas, e seleciona entre inspeção, spider ou cliente recursivo)
+                
+		ModuloBase( Serve como base para recursos, Spider e dump)
+                
+		main(É o módulo principal que chama as rotinas, e seleciona entre inspeção, spider ou cliente recursivo)
        
        Para definição das funções e estruturas do projeto, temos o módulo Estrutura.h, que contem:
 
@@ -281,14 +288,21 @@ class Spider {
                
 	      
 *COMO RODAR PROJETO*
+
 	Para rodar projeto, é bem simples. Sistema usado tem que ser distribuição Linux.
 	Ter instalado o compilador G++ e o Make para rodar o arquivo makefile
+	
 	Passos:
 		1)Baixar arquivos fontes do projeto, copiar para alguma pasta
+		
 		2)Abrir terminal e caminhar até a pasta do projeto(comando CD)
+		
 		3)Rodar arquivo makefile( comando "make -f makefile")
+		
 		4)Será gerado os arquivos objetos e o executável aracne
+		
 		5)Rodar aracne( comando ./aracne) que ele ira rodar na porta 8228 caso não passe outra porta como argumento. Para fazer os requests e responses o navegador web que for utilizar deve ter o proxy configurado no servidorProxy:127.0.0.1 e porta 8228.
+		
 		6)Para rodar o Spider, deve-se comentar a linha final da main.cpp (while( teste1.Loop() ) {};)
 		e setar abaixo a chamada ao Spider com por exemplo Spider("www.sitequalquer.com").
                 
