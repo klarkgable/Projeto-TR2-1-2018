@@ -3,7 +3,6 @@
         ///Klark Gable Souza Porto  120015421
         ///Gabriel Rodrigues Diógenes Macedo  15/0126808
 
-/*****Arquivo contendo todas as estruturas e metodos utilizados no projeto*****/
 
 #ifndef ESTRUTURA_H_INCLUDED
 #define ESTRUTURA_H_INCLUDED
@@ -172,9 +171,11 @@ struct Recurso {
 		std::string getNome();
 		std::string getNomeLocal();
 		std::vector< Referencia > getRecursosReferenciados();
+		void setaReferencias( std::vector< long long int > refs );
 		bool salvar( std::string caminhoRoot );
+		bool Valido();
 
-		std::vector< unsigned long int > referencias;
+		
 	private:
 		void procuraReferencias( const char* propriedadeHTML );
 		std::string host;
@@ -182,6 +183,9 @@ struct Recurso {
 		std::string nomeLocal;
 		std::string dados;
 		std::vector< Referencia > recursosReferenciados;
+		std::vector< unsigned long int > referencias;
+		bool valido;
+
 };
 
 
