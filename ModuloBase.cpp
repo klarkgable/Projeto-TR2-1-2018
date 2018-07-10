@@ -16,25 +16,26 @@ Recurso::Recurso( std::string host, std::string nome, std::string respostaHTTP )
 	this->nome = host + "/" + nomeLocal;
 
 	if( nomeLocal.empty() )
-        nomeLocal = "index";
+        	nomeLocal = "index";
 
 	HTTP::Header header( respostaHTTP );
-	dados = header.corpo;
 
-
-	bool procura = false;
-	for( unsigned long int i = 0; i < header.campos.size(); i++ ) {
+	bool Html = false;
+	for( unsigned int i = 0; i < header.campos.size(); i++ ) {
 		if( std::get<0>( header.campos[i] ) == "Content-Type" ) {
-			unsigned long long int pos = std::get<1>( header.campos[i] ).find( "text/html" );
-			procura |= pos != std::string::npos;
+			Html = std::get<1>( header.campos[i] ).find( "text/html" ) != std::string::npos;
 			break;
 		}
 	}
-	if( procura ) {
-		procuraReferencias( "src=\"" );
-		procuraReferencias( "href=\"" );
+	if( Html && header.PrimeiraLinha == "HTTP/1.1 200 OK" ) {
+		dados = header.corpo;
+		procuraReferencias( "<a href=\"" );
+		valido = true;
+	} else {
+		valido = false;
 	}
 }
+
 
 std::string Recurso::getNome() {
 	return nome;
@@ -51,6 +52,23 @@ std::vector< Recurso::Referencia > Recurso::getRecursosReferenciados() {
 bool Recurso::salvar( std::string caminhoRoot ) {
 }
 
+
+void Recurso::setaReferencias( std::vector< long long int > refs ) {
+	for( unsigned int i = 0, j = 0; i < refs.size(); i++, j++ ) {
+		if( refs[i] != -1 ) {
+		    referencias.push_back( refs[i] );
+		} else {
+			recursosReferenciados.erase( recursosReferenciados.begin() + j-- );
+		}
+	}
+}
+
+
+bool Recurso::Valido() {
+	return valido;
+}
+
+
 void Recurso::procuraReferencias( const char* propriedadeHTML ) {
 	std::string propriedade( propriedadeHTML );
 	unsigned long long int comeco = dados.find( propriedade );
@@ -64,7 +82,7 @@ void Recurso::procuraReferencias( const char* propriedadeHTML ) {
 		} else if( (achaHost = referencia.find( host ), achaHost != std::string::npos) ) {
 			achaHost += host.length() + 1;
 		}
-		if( achaHost != std::string::npos ) { // So adiciona se for local, e adiciona somente o caminho relativo (depois da primeria "/")
+		if( achaHost != std::string::npos ) {
 			referencia = achaHost <= referencia.length() ? referencia.substr( achaHost ) : std::string( "" );
 			recursosReferenciados.emplace_back( comeco, fim, referencia );
 		}
@@ -79,17 +97,30 @@ Spider::Spider( std::string host ) : sucesso(false), nomeArvoreRoot(host) {
 	if( !socket.conecta(host, "80") ) return;
 	std::queue< std::string > recursosDownload;
 	recursosDownload.push( host );
+	short contador= 0;
+
+
+	printf( "Caminhando para %s e computando a arvore", host.c_str() );
+	fflush( stdout );
 
 	while( !recursosDownload.empty() ) {
+		contador= (contador+1)%10;
+		if( contador==0 ) {
+			printf( "." );
+			fflush( stdout );
+		}
 		if( achaRecursos( recursosDownload.front() ) == -1 ) {
-			std::string recurso( recursosBaixados( host, recursosDownload.front() ) );
-			if( recurso.empty() ) return;
-			arvore.emplace_back( host, recursosDownload.front(), recurso );
+			std::string dados( recursosBaixados( host, recursosDownload.front() ) );
+			if( dados.empty() ) 
+				return;
+			Recurso r( host, recursosDownload.front(), dados );
+			if( r.Valido() )
+				 arvore.push_back( r );
 
 			// Adiciona referencias
-			std::vector< Recurso::Referencia > r = arvore.back().getRecursosReferenciados();
-			for( unsigned int i = 0; i < r.size(); i++ ) {
-				std::string proximoRecurso = host + "/" + std::get<2>( r[i] );
+			std::vector< Recurso::Referencia > refs = arvore.back().getRecursosReferenciados();
+			for( unsigned int i = 0; i < refs.size(); i++ ) {
+				std::string proximoRecurso = host + "/" + std::get<2>( refs[i] );
 				if( achaRecursos( proximoRecurso ) == -1 ) recursosDownload.push( proximoRecurso );
 			}
 
@@ -99,16 +130,17 @@ Spider::Spider( std::string host ) : sucesso(false), nomeArvoreRoot(host) {
 
 	// Acha e seta as referencias na arvore
 	for( unsigned int j = 0; j < arvore.size(); j++ ) {
-		std::vector< Recurso::Referencia > r = arvore[j].getRecursosReferenciados();
-		for( unsigned int i = 0; i < r.size(); i++ ) {
-			long long int numeroRef = achaRecursos( host + "/" + std::get<2>( r[i] ) );
-			if( -1 == numeroRef )
-                return;
-			arvore[j].referencias.push_back( numeroRef );
+		std::vector< Recurso::Referencia > refs = arvore[j].getRecursosReferenciados();
+		std::vector< long long int > achaRefs;
+		for( unsigned int i = 0; i < refs.size(); i++ ) {
+			achaRefs.push_back( achaRecursos( host + "/" + std::get<2>( refs[i] ) ) );
 		}
+		arvore[j].setaReferencias( achaRefs );
 	}
+	printf( "\n" );
 	sucesso = true;
 }
+
 
 bool Spider::Valido() {
 	return sucesso;
