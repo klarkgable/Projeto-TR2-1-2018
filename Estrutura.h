@@ -3,6 +3,8 @@
         ///Klark Gable Souza Porto  120015421
         ///Gabriel Rodrigues Diógenes Macedo  15/0126808
 
+/*****Arquivo contendo todas as estruturas e metodos utilizados no projeto*****/
+
 #ifndef ESTRUTURA_H_INCLUDED
 #define ESTRUTURA_H_INCLUDED
 

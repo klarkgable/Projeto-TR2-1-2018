@@ -11,16 +11,13 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 
-
 #define QUEUESIZE 5
-
-
 
 ///funçoes para tratamento de Sockets
 Socket::Socket( int Descritor ) : valido(false), Descritor(Descritor) {
 	socklen_t addr_len = sizeof( endereco );
-	if( -1 == getsockname( Descritor, (struct sockaddr*) &endereco, &addr_len ) || addr_len != sizeof(endereco) ) {
-		fprintf( stderr, "\nErro no getsockname.\n" );
+	if(getsockname( Descritor, (struct sockaddr*) &endereco, &addr_len ) || addr_len != sizeof(endereco) == -1) {
+		fprintf(stderr, "\nErro no getsockname.\n");
 	} else {
 		valido = true;
 	}
@@ -29,9 +26,9 @@ Socket::Socket( int Descritor ) : valido(false), Descritor(Descritor) {
 Socket::Socket() : valido(false), Descritor(-1), endereco() {}
 
 Socket::~Socket() {
-	if( valido ) {
-		if( -1 == close( Descritor ) ) {
-		} else {
+	if(valido) {
+		if(close( Descritor == -1) ) {
+		}else{
 			valido = false;
 			Descritor = -1;
 		}
