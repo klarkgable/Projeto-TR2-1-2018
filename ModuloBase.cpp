@@ -10,6 +10,8 @@ namespace ModuloBase{
 
 
 ///funçoes para recurso que serao usadas no Spider
+
+//verifica dados da resposta http para achar referencias
 Recurso::Recurso(std::string host, std::string nome, std::string respostaHTTP) : host(host){
 	int comeco = nome.find(host);
 	nomeLocal = nome.replace(comeco, host.length()+1, "");
@@ -55,6 +57,7 @@ std::vector< unsigned long int > Recurso::getReferencias() {
 bool Recurso::salvar( std::string caminhoRoot ) {
 }
 
+//com os recursos que foram referenciados seta referencias
 void Recurso::setaReferencias(std::vector< long long int > refs){
 	for(unsigned int i = 0, j = 0; i < refs.size(); i++, j++){
 		if(refs[i] != -1){
@@ -71,7 +74,7 @@ bool Recurso::Valido(){
 	return valido;
 }
 
-
+//printa na arvore de acordo com os niveis detectados, os caracteres 
 void Recurso::printaNaArvore( unsigned int nivel, bool ultimo ) {
 	unsigned int i = 0;
 	for( ; i < nivel-1; i++ ) {
@@ -83,6 +86,8 @@ void Recurso::printaNaArvore( unsigned int nivel, bool ultimo ) {
 	printf( "%s", nomeLocal.c_str() );
 }
 
+
+//faz varredura procurando referencias
 void Recurso::procuraReferencias(const char* propriedadeHTML){
 	std::string propriedade(propriedadeHTML);
 	unsigned long long int comeco = dados.find(propriedade);
@@ -106,6 +111,8 @@ void Recurso::procuraReferencias(const char* propriedadeHTML){
 }
 
 ///funçoes para Spider
+
+//metodo principal de busca do host para formação da arvore
 Spider::Spider(std::string host) : sucesso(false), nomeArvoreRoot(host){
 	if(!socket.conecta(host, "80")){
 		return;
@@ -114,7 +121,7 @@ Spider::Spider(std::string host) : sucesso(false), nomeArvoreRoot(host){
 	recursosDownload.push(host);
 	short contador= 0;
 
-	printf("Caminhando para %s e computando a arvore", host.c_str());
+	printf("Buscando %s e formando a arvore de referencias", host.c_str());
 	fflush(stdout);
 
 	while(!recursosDownload.empty()){
@@ -163,7 +170,7 @@ bool Spider::Valido(){
 	return sucesso;
 }
 
-
+//forma a arvore recursiva
 void Spider::printaArvoreRecursiva( unsigned long int no, int nivel, bool ultimo, std::set< unsigned long int >& valoresPrintados ) {
 	arvore[no].printaNaArvore( nivel, ultimo );
 	if( valoresPrintados.find( no ) != valoresPrintados.end() ) {
@@ -179,7 +186,7 @@ void Spider::printaArvoreRecursiva( unsigned long int no, int nivel, bool ultimo
 	}
 }
 
-
+//mostra arvore na tela
 void Spider::printaArvore() {
 	if( arvore.size() == 0 )
 		 return;
@@ -195,6 +202,7 @@ void Spider::printaArvore() {
 }
 
 
+//baixa recursos do host
 std::string Spider::recursosBaixados(std::string host, std::string nomeRecurso){
 	int arvores = -1;
 
@@ -255,6 +263,7 @@ RETRY:
 	return mensagem;
 }
 
+//acha recursos atraves da arvore
 long long int Spider::achaRecursos(std::string nomeRecurso){
 	for(unsigned long int i = 0; i < arvore.size(); i++){
 		if(arvore[i].getNome() == nomeRecurso ) return i;
