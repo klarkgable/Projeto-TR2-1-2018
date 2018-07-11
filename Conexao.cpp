@@ -16,6 +16,8 @@
 ///funçoes para tratamento de Sockets
 Socket::Socket(int Descritor) : valido(false), Descritor(Descritor){
 	socklen_t addr_len = sizeof(endereco);
+	
+	//resgatando socket valido usando getsockname e setando validez
 	if(getsockname(Descritor, (struct sockaddr*) &endereco, &addr_len) || addr_len != sizeof(endereco) == -1){
 		fprintf(stderr, "\nErro no getsockname.\n");
 	}
@@ -26,6 +28,7 @@ Socket::Socket(int Descritor) : valido(false), Descritor(Descritor){
 
 Socket::Socket() : valido(false), Descritor(-1), endereco(){}
 
+//destrutor da classe, setando validez como falsa
 Socket::~Socket() {
 	if(valido){
 		if(close(Descritor == -1)){}
@@ -36,6 +39,7 @@ Socket::~Socket() {
 	}
 }
 
+//abre uma conexao com socket
 bool Socket::conecta(std::string nome, std::string porta, int socketFamily, int socketType, int protocol){
 	struct addrinfo *primeiro, *ultimo;	
 	struct addrinfo sugestoes;
@@ -46,6 +50,7 @@ bool Socket::conecta(std::string nome, std::string porta, int socketFamily, int 
 	sugestoes.ai_flags = 0;
 	sugestoes.ai_protocol = protocol;
 
+		
 	int s = getaddrinfo(nome.c_str(), porta.c_str(), &sugestoes, &primeiro);
 	if(s < 0){
 		fprintf(stderr, "\nErro ao procurar por nome.\n");
@@ -53,6 +58,7 @@ bool Socket::conecta(std::string nome, std::string porta, int socketFamily, int 
 	}
 	else{
 		for(ultimo = primeiro; ultimo != NULL; ultimo = ultimo->ai_next){
+			//verificando validez na abertura do socket
 			Descritor = socket(ultimo->ai_family, ultimo->ai_socktype, ultimo->ai_protocol);
 			if(Descritor == -1) {
 				fprintf(stderr, "\nFalha ao criar socket. Tente outro endereco.\n");
@@ -76,6 +82,7 @@ bool Socket::conecta(std::string nome, std::string porta, int socketFamily, int 
 	return valido;
 }
 
+//
 bool Socket::percorre(std::string nome, std::string porta, int queueSize, int socketFamily, int socketType, int protocol){
 	struct addrinfo *primeiro, *ultimo;
 	
@@ -93,17 +100,14 @@ bool Socket::percorre(std::string nome, std::string porta, int queueSize, int so
 	}
 	else{
 		for(ultimo = primeiro; ultimo != NULL; ultimo = ultimo->ai_next){
+			//verificando validez na abertura do socket
 			Descritor = socket(ultimo->ai_family, ultimo->ai_socktype, ultimo->ai_protocol);
 			if(Descritor == -1){
-				#ifdef DEBUG
 				fprintf(stderr, "\nFalha ao criar socket. Tente outro endereco.\n");
-				#endif // DEBUG
 				continue;
 			}
 			if(bind(Descritor, ultimo->ai_addr, ultimo ->ai_addrlen) == -1){
-				#ifdef DEBUG
 				fprintf(stderr, "\nFalha ao criar socket de ligacao. Tente outro endereco.\n");
-				#endif // DEBUG
 				close(Descritor);
 				continue;
 			}
@@ -124,6 +128,9 @@ bool Socket::percorre(std::string nome, std::string porta, int queueSize, int so
 	freeaddrinfo(primeiro);
 	return valido;
 }
+
+
+//Metodos para gets de atributos de socket
 
 bool Socket::Valido(){
 	return valido;
@@ -163,6 +170,7 @@ namespace Inspetor{
 
 //construtor
 conexaoInterna::conexaoInterna(int porta){
+	//configurando socket para conexao interna
 	if(!escutandoSocket.percorre("127.0.0.1", std::to_string(porta), QUEUESIZE)){
 		fprintf(stderr, "\nNao foi possivel configurar o socket.\n");
 	}
@@ -175,6 +183,7 @@ conexaoInterna::~conexaoInterna(){
 	}
 }
 
+//faz verificaçao de sockets para autorizar conexao
 bool conexaoInterna::aceitaConexoes(){
 	if(!escutandoSocket.Valido()){
 		return false;
@@ -205,6 +214,7 @@ bool conexaoInterna::aceitaConexoes(){
 	return retornaValor;
 }
 
+//verifica sockets para recebimento de requisições
 bool conexaoInterna::recebeRequisicoes(){
 	if(socketsConectados.size() == 0){
 		return true;
@@ -270,6 +280,7 @@ void conexaoInterna::fechaSocket(int Descritor){
 	}
 }
 
+//recebe resposta header e envia caso conexao em aberto
 ssize_t conexaoInterna::enviaResposta(std::weak_ptr< Socket > recebendoSocket, HTTP::Header resposta){
     if(recebendoSocket.expired()){
     	printf("\nNao pode enviar dados. Conexao foi fechada.\n");
@@ -298,6 +309,7 @@ conexaoExterna::~conexaoExterna(){
 	}
 }
 
+//abre conexao externa para enviar requisição, se sucesso envia dados de requisicao
 ssize_t conexaoExterna::enviaRequisicao(std::weak_ptr< Socket > requisitandoSocket, HTTP::Header requisicao){
 	parSocket parSocket;
 	int n = acharParSocket(requisitandoSocket);
@@ -323,6 +335,7 @@ ssize_t conexaoExterna::enviaRequisicao(std::weak_ptr< Socket > requisitandoSock
 	return sent;
 }
 
+//abre conexao para receber respostas
 bool conexaoExterna::recebeRespostas(){
 	arrumarSockets();
 	if(socketsCriados.size() <= 0){
@@ -380,6 +393,7 @@ bool conexaoExterna::recebeRespostas(){
 	return retornaValor;
 }
 
+//achar com weak_ptr
 int conexaoExterna::acharParSocket(std::weak_ptr< Socket > s_w_ptr){
 	arrumarSockets();
 	if(s_w_ptr.expired()){
@@ -397,6 +411,7 @@ int conexaoExterna::acharParSocket(std::weak_ptr< Socket > s_w_ptr){
 	return -1; // Nao encontrou
 }
 
+//achar com shared_ptr
 int conexaoExterna::acharParSocket(std::shared_ptr< Socket > s_s_ptr){
 	arrumarSockets();
 	if(s_s_ptr.get() == nullptr){
@@ -420,6 +435,7 @@ int conexaoExterna::acharParSocket(std::shared_ptr< Socket > s_s_ptr){
 	}
 	return -1; // Nao encontrou
 }
+
 
 void conexaoExterna::arrumarSockets(){ // Exclui pares cujo o socket interno foi excluido
 	for(long int i = (long int) socketsCriados.size() - 1; i >= 0 ; i--){
