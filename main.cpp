@@ -6,15 +6,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include<iostream>
 #include <netinet/in.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include "Estrutura.h"
 
-#define DEFAULT_PORT 8228
+using std::cout;
+using std::cin;
 
 int main(int argc, char* argv[]){
-	int porta = DEFAULT_PORT;
+	int porta = 8228;
+	int funcionalidade;
+
 	if(argc == 3) {
 		if(std::string(argv[1]) == "-p"){
 			try{
@@ -24,7 +28,7 @@ int main(int argc, char* argv[]){
 				return -1;
 			}
 		}else{
-			printf("\nEntrada nao reconhecida.\nOpçoes validas:\n[-p <port>]\\Escolha outra porta diferente da padrão %d\n", porta);
+			printf("\nEntrada nao reconhecida.\nOpçoes validas:\n[-p <port>]\\Escolha outra porta diferente da padrão 8228 %d\n", porta);
 			return -1;
 		}
 	}else if(argc != 1){
@@ -32,11 +36,29 @@ int main(int argc, char* argv[]){
 		return -1;
 	}
 
-	printf("\nIniciando aracne na porta# %d\n", porta);
+	printf("\nIniciando aracne na porta # %d\n", porta);
 
 	Inspetor::ServidorProxy teste1(porta);
+	
+	printf("ESCOLHA A FUNCIONALIDADE(1-INSPETOR, 2-SPIDER, 3-DUMP):" );
+	scanf("%d",&funcionalidade);
 
-	while(teste1.Loop()) {};
+	if(funcionalidade==1){
+		while(teste1.Loop()) {};
+	}
+	else if(funcionalidade==2){
+		std::string siteSpider;
+		
+		//cout << "Entre com o site no formato ''www.site...'' para gerar a arvore hipertextual: ";
+
+		//getline(cin, siteSpider);
+
+		ModuloBase::Spider teste2( "www.unb.br");
+		teste2.printaArvore();
+	}
+	else{
+		return -1;
+		}
 
 	return 0;
 }
