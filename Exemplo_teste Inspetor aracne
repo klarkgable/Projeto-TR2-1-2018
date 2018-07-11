@@ -1,111 +1,19 @@
 klark@klark-VirtualBox:~$ cd Downloads
-klark@klark-VirtualBox:~/Downloads$ cd InspetorHTTP_teste
-klark@klark-VirtualBox:~/Downloads/InspetorHTTP_teste$ ./aracne
+klark@klark-VirtualBox:~/Downloads$ cd Projeto-TR2-final
+klark@klark-VirtualBox:~/Downloads/Projeto-TR2-final$ make -f makefile
+g++    -c -o Servidor.o Servidor.cpp
+g++    -c -o Conexao.o Conexao.cpp
+g++    -c -o ModuloBase.o ModuloBase.cpp
+g++    -c -o Header.o Header.cpp
+g++    -c -o main.o main.cpp
+g++ -o aracne Servidor.o Conexao.o ModuloBase.o Header.o main.o -lm -lpthread -std=c++11 -Wall -Wextra -Wno-unused-parameter -Werror=init-self -O3 -mtune=native
+klark@klark-VirtualBox:~/Downloads/Projeto-TR2-final$ ./aracne
 
-Iniciando aracne na porta# 8228
+Iniciando aracne na porta # 8228
 
-Enviando 1 requisicoes.
+ESCOLHA A FUNCIONALIDADE(1-INSPETOR, 2-SPIDER, 3-DUMP):1
 
-Enviando para ocsp.digicert.com:80...
-POST http://ocsp.digicert.com/ HTTP/1.1
-Host: ocsp.digicert.com
-User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:61.0) Gecko/20100101 Firefox/61.0
-Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
-Accept-Language: en-GB,en;q=0.5
-Accept-Encoding: gzip, deflate
-Content-Length: 83
-Content-Type: application/ocsp-request
-Connection: keep-alive
-
-<corpo>
-
-
-Enviando 1 respostas.
-
-Enviando...
-HTTP/1.1 200 OK
-Accept-Ranges: bytes
-Cache-Control: max-age=165063
-Content-Type: application/ocsp-response
-Date: Tue, 10 Jul 2018 04:34:52 GMT
-Etag: "5b43e582-1d7"
-Expires: Thu, 12 Jul 2018 02:13:53 GMT
-Last-Modified: Mon, 09 Jul 2018 22:45:22 GMT
-Server: ECS (cgh/2A30)
-X-Cache: HIT
-Content-Length: 471
-
-<corpo>
-
-Enviando 1 requisicoes.
-
-Enviando para ocsp.digicert.com:80...
-POST http://ocsp.digicert.com/ HTTP/1.1
-Host: ocsp.digicert.com
-User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:61.0) Gecko/20100101 Firefox/61.0
-Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
-Accept-Language: en-GB,en;q=0.5
-Accept-Encoding: gzip, deflate
-Content-Length: 83
-Content-Type: application/ocsp-request
-Connection: keep-alive
-
-<corpo>
-
-
-Enviando 1 respostas.
-
-Enviando...
-HTTP/1.1 200 OK
-Accept-Ranges: bytes
-Cache-Control: max-age=162567
-Content-Type: application/ocsp-response
-Date: Tue, 10 Jul 2018 22:34:18 GMT
-Etag: "5b44f7ae-1d7"
-Expires: Thu, 12 Jul 2018 19:13:45 GMT
-Last-Modified: Tue, 10 Jul 2018 18:15:10 GMT
-Server: ECS (cgh/2ADA)
-X-Cache: HIT
-Content-Length: 471
-
-<corpo>
-
-
-Enviando 1 requisicoes.
-
-Enviando para ocsp.digicert.com:80...
-POST http://ocsp.digicert.com/ HTTP/1.1
-Host: ocsp.digicert.com
-User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:61.0) Gecko/20100101 Firefox/61.0
-Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
-Accept-Language: en-GB,en;q=0.5
-Accept-Encoding: gzip, deflate
-Content-Length: 83
-Content-Type: application/ocsp-request
-Connection: keep-alive
-
-<corpo>
-
-
-Enviando 1 respostas.
-
-Enviando...
-HTTP/1.1 200 OK
-Accept-Ranges: bytes
-Cache-Control: max-age=160766
-Content-Type: application/ocsp-response
-Date: Tue, 10 Jul 2018 22:34:19 GMT
-Etag: "5b44f7ae-1d7"
-Expires: Thu, 12 Jul 2018 19:13:31 GMT
-Last-Modified: Tue, 10 Jul 2018 18:15:10 GMT
-Server: ECS (cgh/2AC9)
-X-Cache: HIT
-Content-Length: 471
-
-<corpo>
-
-
-Enviando 1 requisicoes.
+Enviando 3 requisicoes.
 
 Enviando para ocsp.pki.goog:80...
 POST http://ocsp.pki.goog/GTSGIAG3 HTTP/1.1
@@ -121,19 +29,19 @@ Connection: keep-alive
 <corpo>
 
 
-Enviando 1 respostas.
-
-Enviando...
-HTTP/1.1 404 Not Found
-Content-Type: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
-Date: Tue, 10 Jul 2018 22:34:34 GMT
-Server: ECS (cgh/2A30)
-Content-Length: 345
+Enviando para ocsp.digicert.com:80...
+POST http://ocsp.digicert.com/ HTTP/1.1
+Host: ocsp.digicert.com
+User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:61.0) Gecko/20100101 Firefox/61.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-GB,en;q=0.5
+Accept-Encoding: gzip, deflate
+Content-Length: 83
+Content-Type: application/ocsp-request
+Connection: keep-alive
 
 <corpo>
 
-
-Enviando 1 requisicoes.
 
 Enviando para ocsp.pki.goog:80...
 POST http://ocsp.pki.goog/GTSGIAG3 HTTP/1.1
@@ -149,74 +57,18 @@ Connection: keep-alive
 <corpo>
 
 
-Enviando 1 respostas.
+Enviando 1 requisicao.
 
-Enviando...
-HTTP/1.1 404 Not Found
-Content-Type: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
-Date: Tue, 10 Jul 2018 22:34:37 GMT
-Server: ECS (cgh/2A30)
-Content-Length: 345
-
-<corpo>
-
-
-Enviando 1 requisicoes.
-
-Enviando para www.sisu.mec.gov.br:80...
-GET http://www.sisu.mec.gov.br/ HTTP/1.1
-Host: www.sisu.mec.gov.br
+Enviando para ocsp.pki.goog:80...
+POST http://ocsp.pki.goog/GTSGIAG3 HTTP/1.1
+Host: ocsp.pki.goog
 User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:61.0) Gecko/20100101 Firefox/61.0
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
 Accept-Language: en-GB,en;q=0.5
 Accept-Encoding: gzip, deflate
-Referer: https://www.google.com/
+Content-Length: 75
+Content-Type: application/ocsp-request
 Connection: keep-alive
-Upgrade-Insecure-Requests: 1
-
-<corpo>
-
-
-Enviando 1 requisicoes.
-
-Enviando para detectportal.firefox.com:80...
-GET http://detectportal.firefox.com/success.txt HTTP/1.1
-Host: detectportal.firefox.com
-User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:61.0) Gecko/20100101 Firefox/61.0
-Accept: */*
-Accept-Language: en-GB,en;q=0.5
-Accept-Encoding: gzip, deflate
-Cache-Control: no-cache
-Pragma: no-cache
-Connection: keep-alive
-
-<corpo>
-
-
-Enviando 1 respostas.
-
-Enviando...
-HTTP/1.1 404 Not Found
-Content-Type: text/html
-Date: Tue, 10 Jul 2018 04:34:54 GMT
-Server: ECS (cgh/2A6A)
-Content-Length: 345
-
-<corpo>
-
-
-Enviando 1 requisicoes.
-
-Enviando para intervox.nce.ufrj.br:80...
-GET http://intervox.nce.ufrj.br/~diniz/d/prin.htm HTTP/1.1
-Host: intervox.nce.ufrj.br
-User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:61.0) Gecko/20100101 Firefox/61.0
-Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
-Accept-Language: en-GB,en;q=0.5
-Accept-Encoding: gzip, deflate
-Referer: http://intervox.nce.ufrj.br/~diniz/d/
-Connection: keep-alive
-Upgrade-Insecure-Requests: 1
 
 <corpo>
 
@@ -225,49 +77,158 @@ Enviando 2 respostas.
 
 Enviando...
 HTTP/1.1 200 OK
-Date: Tue, 10 Jul 2018 23:52:53 GMT
-Server: Apache
-Last-Modified: Fri, 24 Dec 2004 22:47:15 GMT
 Accept-Ranges: bytes
-Vary: Accept-Encoding
-Content-Encoding: gzip
-Content-Length: 282
-Keep-Alive: timeout=5, max=100
-Connection: Keep-Alive
-Content-Type: text/html
+Cache-Control: max-age=154791
+Content-Type: application/ocsp-response
+Date: Wed, 11 Jul 2018 23:20:14 GMT
+Etag: "5b46492e-1d7"
+Expires: Fri, 13 Jul 2018 18:19:37 GMT
+Last-Modified: Wed, 11 Jul 2018 18:15:10 GMT
+Server: ECS (cgh/2A5C)
+X-Cache: HIT
+Content-Length: 471
 
 <corpo>
 
 
 Enviando...
 HTTP/1.1 200 OK
-Date: Tue, 10 Jul 2018 23:52:53 GMT
-Server: Apache
-Last-Modified: Fri, 24 Dec 2004 22:26:48 GMT
-Accept-Ranges: bytes
-Vary: Accept-Encoding
-Content-Encoding: gzip
-Content-Length: 333
-Keep-Alive: timeout=5, max=99
-Connection: Keep-Alive
-Content-Type: text/html
+Content-Type: application/ocsp-response
+Date: Wed, 11 Jul 2018 23:20:14 GMT
+Cache-Control: public, max-age=86400
+Server: ocsp_responder
+Content-Length: 463
+X-XSS-Protection: 1; mode=block
+X-Frame-Options: SAMEORIGIN
 
 <corpo>
 
-Enviando 3 requisicoes.
 
-Enviando para intervox.nce.ufrj.br:80...
-GET http://intervox.nce.ufrj.br/~diniz/d/diniz.jpg HTTP/1.1
-Host: intervox.nce.ufrj.br
+Enviando 1 requisicao.
+
+Enviando para ocsp.pki.goog:80...
+POST http://ocsp.pki.goog/GTSGIAG3 HTTP/1.1
+Host: ocsp.pki.goog
 User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:61.0) Gecko/20100101 Firefox/61.0
-Accept: */*
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
 Accept-Language: en-GB,en;q=0.5
 Accept-Encoding: gzip, deflate
-Referer: http://intervox.nce.ufrj.br/~diniz/d/prin.htm
+Content-Length: 75
+Content-Type: application/ocsp-request
 Connection: keep-alive
 
 <corpo>
 
+
+Enviando 1 resposta.
+
+Enviando...
+HTTP/1.1 200 OK
+Content-Type: application/ocsp-response
+Date: Wed, 11 Jul 2018 23:20:14 GMT
+Cache-Control: public, max-age=86400
+Server: ocsp_responder
+Content-Length: 463
+X-XSS-Protection: 1; mode=block
+X-Frame-Options: SAMEORIGIN
+
+<corpo>
+
+
+Enviando 1 resposta.
+
+Enviando...
+HTTP/1.1 200 OK
+Content-Type: application/ocsp-response
+Date: Wed, 11 Jul 2018 23:20:14 GMT
+Cache-Control: public, max-age=86400
+Server: ocsp_responder
+Content-Length: 463
+X-XSS-Protection: 1; mode=block
+X-Frame-Options: SAMEORIGIN
+
+<corpo>
+
+
+Enviando 1 resposta.
+
+Enviando...
+HTTP/1.1 200 OK
+Content-Type: application/ocsp-response
+Date: Wed, 11 Jul 2018 23:20:14 GMT
+Cache-Control: public, max-age=86400
+Server: ocsp_responder
+Content-Length: 463
+X-XSS-Protection: 1; mode=block
+X-Frame-Options: SAMEORIGIN
+
+<corpo>
+
+
+Enviando 2 requisicoes.
+
+Enviando para ocsp.pki.goog:80...
+POST http://ocsp.pki.goog/GTSGIAG3 HTTP/1.1
+Host: ocsp.pki.goog
+User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:61.0) Gecko/20100101 Firefox/61.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-GB,en;q=0.5
+Accept-Encoding: gzip, deflate
+Content-Length: 75
+Content-Type: application/ocsp-request
+Connection: keep-alive
+
+<corpo>
+
+
+Enviando para ocsp.digicert.com:80...
+POST http://ocsp.digicert.com/ HTTP/1.1
+Host: ocsp.digicert.com
+User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:61.0) Gecko/20100101 Firefox/61.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-GB,en;q=0.5
+Accept-Encoding: gzip, deflate
+Content-Length: 83
+Content-Type: application/ocsp-request
+Connection: keep-alive
+
+<corpo>
+
+
+Enviando 1 resposta.
+
+Enviando...
+HTTP/1.1 200 OK
+Accept-Ranges: bytes
+Cache-Control: max-age=162125
+Content-Type: application/ocsp-response
+Date: Wed, 11 Jul 2018 23:20:15 GMT
+Etag: "5b46492e-1d7"
+Expires: Fri, 13 Jul 2018 20:09:38 GMT
+Last-Modified: Wed, 11 Jul 2018 18:15:10 GMT
+Server: ECS (cgh/2A6A)
+X-Cache: HIT
+Content-Length: 471
+
+<corpo>
+
+
+Enviando 1 resposta.
+
+Enviando...
+HTTP/1.1 200 OK
+Content-Type: application/ocsp-response
+Date: Wed, 11 Jul 2018 23:20:15 GMT
+Cache-Control: public, max-age=86400
+Server: ocsp_responder
+Content-Length: 463
+X-XSS-Protection: 1; mode=block
+X-Frame-Options: SAMEORIGIN
+
+<corpo>
+
+
+Enviando 1 requisicao.
 
 Enviando para www.cutandpastescripts.com:80...
 GET http://www.cutandpastescripts.com/cgi-bin/textcounter/textcounter2.pl?username=diniz&page=86229 HTTP/1.1
@@ -281,6 +242,8 @@ Connection: keep-alive
 
 <corpo>
 
+
+Enviando 1 requisicao.
 
 Enviando para www.supertrafego.com:80...
 GET http://www.supertrafego.com/trocalinks_view.asp?id=44940&cat=07&fonte=FFFFFF&fundo=000000 HTTP/1.1
