@@ -36,14 +36,14 @@ int main(int argc, char* argv[]){
 		return -1;
 	}
 
-	printf("\nIniciando aracne na porta # %d\n", porta);
+	printf("\nIniciando aracne na porta # %d\n\n", porta);
 
-	Inspetor::ServidorProxy teste1(porta);
 	
 	printf("ESCOLHA A FUNCIONALIDADE(1-INSPETOR, 2-SPIDER, 3-DUMP):" );
 	scanf("%d",&funcionalidade);
 
 	if(funcionalidade==1){
+		Inspetor::ServidorProxy teste1(porta);
 		while(teste1.Loop()) {};
 	}
 	else if(funcionalidade==2){
