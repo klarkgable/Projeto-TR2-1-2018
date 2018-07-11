@@ -14,12 +14,13 @@
 
 namespace HTTP {
 
-///metodo para Header
+///metodo para Header, com palavra sendo a string de referência
 Header::Header( std::string& palavra ) : PrimeiraLinha(), corpo(), host(), porta() {
 	if( !palavra.empty() ) {
 		//percorrendo texto do header
-            unsigned int primeiro = 0;
-            unsigned int ultimo = palavra.find( "\r\n" );
+        	unsigned int primeiro = 0;
+        		//atribui a ultimo o final da linha    
+		unsigned int ultimo = palavra.find( "\r\n" );
 
 		//abstraindo a primeira linha do cabeçalho
             PrimeiraLinha = palavra.substr( primeiro, ultimo );
@@ -62,6 +63,7 @@ Header::Header( std::string& palavra ) : PrimeiraLinha(), corpo(), host(), porta
 		if( '[' == host[0] ) {
 			host = host.substr( 1, host.size()-2 );
 		}
+		//caso nao indentifique campo de porta no cabeçalho, usa padrão 		
 		if( porta.empty() ) {
 			//porta padrao http
 			porta = "80";
@@ -75,6 +77,7 @@ Header::Header( std::string& palavra ) : PrimeiraLinha(), corpo(), host(), porta
 std::string Header::texto(bool incluiCorpo) {
 	std::string requisicao( "" );
 
+	//preenche uma string com os atributos ate formar todo o texto
 	requisicao += PrimeiraLinha + "\r\n";
 
 	//percoorendo campos e colocando em uma string de formato da mensagem http para enviar de volta a internet
