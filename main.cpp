@@ -50,11 +50,12 @@ int main(int argc, char* argv[]){
 	else if(funcionalidade==2){
 		std::string siteSpider;
 		
-		//cout << "Entre com o site no formato ''www.site...'' para gerar a arvore hipertextual: ";
+		cout << "Entre com o site no formato 'www.site...' para gerar a arvore hipertextual: ";
+		getchar();
+		getline(cin, siteSpider);
 
-		//getline(cin, siteSpider);
-
-		ModuloBase::Spider teste2( "www.brs.com.br");
+			//caso nao seja possivel localizar site co usuario, fazer manualmente aqui colocando o caminho. ex "www.brs.com.br"		
+		ModuloBase::Spider teste2( siteSpider);
 		teste2.printaArvore();
 	}
 	else{
