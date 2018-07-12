@@ -12,10 +12,11 @@
 #include <sys/socket.h>
 #include "Estrutura.h"
 
-using std::cout;
-using std::cin;
+
 
 int main(int argc, char* argv[]){
+	using std::cout;
+	using std::cin;	
 	int porta = 8228;
 	int funcionalidade;
 
@@ -53,7 +54,7 @@ int main(int argc, char* argv[]){
 
 		//getline(cin, siteSpider);
 
-		ModuloBase::Spider teste2( "www.unb.br");
+		ModuloBase::Spider teste2( "www.brs.com.br");
 		teste2.printaArvore();
 	}
 	else{
