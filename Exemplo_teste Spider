@@ -1,0 +1,352 @@
+klark@klark-VirtualBox:~/Downloads/Projeto-TR2-final$ ./aracne
+
+Iniciando aracne na porta # 8228
+
+ESCOLHA A FUNCIONALIDADE(1-INSPETOR, 2-SPIDER, 3-DUMP):2
+Buscando www.cartoonnetwork.com.br e formando a arvore de referencias.................................................................
+Arvore hipertextual:
+www.cartoonnetwork.com.br (index)
+
+
+ESCOLHA A FUNCIONALIDADE(1-INSPETOR, 2-SPIDER, 3-DUMP):2
+Buscando www.simpletest.org e formando a arvore de referencias
+Arvore hipertextual:
+www.simpletest.org (index)
+
+
+ESCOLHA A FUNCIONALIDADE(1-INSPETOR, 2-SPIDER, 3-DUMP):2
+Buscando qualitr.paginas.ufsc.br e formando a arvore de referencias.
+Arvore hipertextual:
+qualitr.paginas.ufsc.br (index)
+ �� ?administradores
+
+
+
+ESCOLHA A FUNCIONALIDADE(1-INSPETOR, 2-SPIDER, 3-DUMP):2
+Buscando simpletest.org e formando a arvore de referencias
+Arvore hipertextual:
+simpletest.org (index)
+ �� index.html
+ �   �� index.html (recursivo.)
+ �   �� api/
+ �   �� api/ (recursivo.)
+ �� api/ (recursivo.)
+ �� api/ (recursivo.)
+
+
+
+
+
+ESCOLHA A FUNCIONALIDADE(1-INSPETOR, 2-SPIDER, 3-DUMP):2
+Buscando www.brs.com.br e formando a arvore de referencias.........
+Arvore hipertextual:
+www.brs.com.br (index)
+ �� index (recursivo.)
+ �� tutoriais-cpane/
+ �   �� index (recursivo.)
+ �   �� tutoriais-cpane/ (recursivo.)
+ �   �� index (recursivo.)
+ �   �� servidores-dedicados-ssd-no-brasil
+ �   �   �� index (recursivo.)
+ �   �   �� tutoriais-cpane/ (recursivo.)
+ �   �   �� contratar/dedicado-a-ssd/23
+ �   �   �   �� index (recursivo.)
+ �   �   �   �� tutoriais-cpane/ (recursivo.)
+ �   �   �   �� index (recursivo.)
+ �   �   �   �� servidores-dedicados-ssd-no-brasil (recursivo.)
+ �   �   �   �� servidores-dedicados-com-cpanel
+ �   �   �   �   �� index (recursivo.)
+ �   �   �   �   �� tutoriais-cpane/ (recursivo.)
+ �   �   �   �   �� contratar/dedicado-a/39
+ �   �   �   �   �   �� index (recursivo.)
+ �   �   �   �   �   �� tutoriais-cpane/ (recursivo.)
+ �   �   �   �   �   �� index (recursivo.)
+ �   �   �   �   �   �� servidores-dedicados-ssd-no-brasil (recursivo.)
+ �   �   �   �   �   �� servidores-dedicados-com-cpanel (recursivo.)
+ �   �   �   �   �   �� cloud-server-no-brasil
+ �   �   �   �   �   �   �� index (recursivo.)
+ �   �   �   �   �   �   �� tutoriais-cpane/ (recursivo.)
+ �   �   �   �   �   �   �� contratar/servidor-cloud-a/30
+ �   �   �   �   �   �   �   �� index (recursivo.)
+ �   �   �   �   �   �   �   �� tutoriais-cpane/ (recursivo.)
+ �   �   �   �   �   �   �   �� index (recursivo.)
+ �   �   �   �   �   �   �   �� servidores-dedicados-ssd-no-brasil (recursivo.)
+ �   �   �   �   �   �   �   �� servidores-dedicados-com-cpanel (recursivo.)
+ �   �   �   �   �   �   �   �� cloud-server-no-brasil (recursivo.)
+ �   �   �   �   �   �   �   �� cloud-server-com-cpanel
+ �   �   �   �   �   �   �   �   �� index (recursivo.)
+ �   �   �   �   �   �   �   �   �� tutoriais-cpane/ (recursivo.)
+ �   �   �   �   �   �   �   �   �� contratar/servidor-cloud-a/42
+ �   �   �   �   �   �   �   �   �   �� index (recursivo.)
+ �   �   �   �   �   �   �   �   �   �� tutoriais-cpane/ (recursivo.)
+ �   �   �   �   �   �   �   �   �   �� index (recursivo.)
+ �   �   �   �   �   �   �   �   �   �� servidores-dedicados-ssd-no-brasil (recursivo.)
+ �   �   �   �   �   �   �   �   �   �� servidores-dedicados-com-cpanel (recursivo.)
+ �   �   �   �   �   �   �   �   �   �� cloud-server-no-brasil (recursivo.)
+ �   �   �   �   �   �   �   �   �   �� cloud-server-com-cpanel (recursivo.)
+ �   �   �   �   �   �   �   �   �   �� revenda-de-hospedagem
+ �   �   �   �   �   �   �   �   �   �   �� index (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �� tutoriais-cpane/ (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �� contratar/revenda-a/28
+ �   �   �   �   �   �   �   �   �   �   �   �� index (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �   �� tutoriais-cpane/ (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �   �� index (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �   �� servidores-dedicados-ssd-no-brasil (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �   �� servidores-dedicados-com-cpanel (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �   �� cloud-server-no-brasil (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �   �� cloud-server-com-cpanel (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �   �� revenda-de-hospedagem (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �   �� hospedagem-de-site
+ �   �   �   �   �   �   �   �   �   �   �   �   �� index (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �   �   �� tutoriais-cpane/ (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �   �   �� contratar/hospedagem-a/26
+ �   �   �   �   �   �   �   �   �   �   �   �   �   �� index (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �   �   �   �� tutoriais-cpane/ (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �   �   �   �� index (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �   �   �   �� servidores-dedicados-ssd-no-brasil (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �   �   �   �� servidores-dedicados-com-cpanel (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �   �   �   �� cloud-server-no-brasil (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �   �   �   �� cloud-server-com-cpanel (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �   �   �   �� revenda-de-hospedagem (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �   �   �   �� hospedagem-de-site (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �   �   �� contratar/hospedagem-b/27
+ �   �   �   �   �   �   �   �   �   �   �   �   �   �� index (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �   �   �   �� tutoriais-cpane/ (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �   �   �   �� index (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �   �   �   �� servidores-dedicados-ssd-no-brasil (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �   �   �   �� servidores-dedicados-com-cpanel (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �   �   �   �� cloud-server-no-brasil (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �   �   �   �� cloud-server-com-cpanel (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �   �   �   �� revenda-de-hospedagem (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �   �   �   �� hospedagem-de-site (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �   �   �� contratar/hospedagem-c/48
+ �   �   �   �   �   �   �   �   �   �   �   �   �   �� index (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �   �   �   �� tutoriais-cpane/ (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �   �   �   �� index (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �   �   �   �� servidores-dedicados-ssd-no-brasil (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �   �   �   �� servidores-dedicados-com-cpanel (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �   �   �   �� cloud-server-no-brasil (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �   �   �   �� cloud-server-com-cpanel (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �   �   �   �� revenda-de-hospedagem (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �   �   �   �� hospedagem-de-site (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �   �   �� index (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �   �   �� servidores-dedicados-ssd-no-brasil (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �   �   �� cloud-server-no-brasil (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �   �   �� cloud-server-com-cpanel (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �   �   �� revenda-de-hospedagem (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �   �   �� hospedagem-de-site (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �� contratar/revenda-b/29
+ �   �   �   �   �   �   �   �   �   �   �   �� index (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �   �� tutoriais-cpane/ (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �   �� index (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �   �� servidores-dedicados-ssd-no-brasil (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �   �� servidores-dedicados-com-cpanel (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �   �� cloud-server-no-brasil (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �   �� cloud-server-com-cpanel (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �   �� revenda-de-hospedagem (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �   �� hospedagem-de-site (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �� contratar/revenda-c/49
+ �   �   �   �   �   �   �   �   �   �   �   �� index (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �   �� tutoriais-cpane/ (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �   �� index (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �   �� servidores-dedicados-ssd-no-brasil (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �   �� servidores-dedicados-com-cpanel (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �   �� cloud-server-no-brasil (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �   �� cloud-server-com-cpanel (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �   �� revenda-de-hospedagem (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �   �� hospedagem-de-site (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �� index (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �� servidores-dedicados-ssd-no-brasil (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �� servidores-dedicados-com-cpanel (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �� cloud-server-no-brasil (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �� cloud-server-com-cpanel (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �� revenda-de-hospedagem (recursivo.)
+ �   �   �   �   �   �   �   �   �   �   �� hospedagem-de-site (recursivo.)
+ �   �   �   �   �   �   �   �   �   �� hospedagem-de-site (recursivo.)
+ �   �   �   �   �   �   �   �   �� contratar/servidor-cloud-b/43
+ �   �   �   �   �   �   �   �   �   �� index (recursivo.)
+ �   �   �   �   �   �   �   �   �   �� tutoriais-cpane/ (recursivo.)
+ �   �   �   �   �   �   �   �   �   �� index (recursivo.)
+ �   �   �   �   �   �   �   �   �   �� servidores-dedicados-ssd-no-brasil (recursivo.)
+ �   �   �   �   �   �   �   �   �   �� servidores-dedicados-com-cpanel (recursivo.)
+ �   �   �   �   �   �   �   �   �   �� cloud-server-no-brasil (recursivo.)
+ �   �   �   �   �   �   �   �   �   �� cloud-server-com-cpanel (recursivo.)
+ �   �   �   �   �   �   �   �   �   �� revenda-de-hospedagem (recursivo.)
+ �   �   �   �   �   �   �   �   �   �� hospedagem-de-site (recursivo.)
+ �   �   �   �   �   �   �   �   �� contratar/servidor-cloud-c/44
+ �   �   �   �   �   �   �   �   �   �� index (recursivo.)
+ �   �   �   �   �   �   �   �   �   �� tutoriais-cpane/ (recursivo.)
+ �   �   �   �   �   �   �   �   �   �� index (recursivo.)
+ �   �   �   �   �   �   �   �   �   �� servidores-dedicados-ssd-no-brasil (recursivo.)
+ �   �   �   �   �   �   �   �   �   �� servidores-dedicados-com-cpanel (recursivo.)
+ �   �   �   �   �   �   �   �   �   �� cloud-server-no-brasil (recursivo.)
+ �   �   �   �   �   �   �   �   �   �� cloud-server-com-cpanel (recursivo.)
+ �   �   �   �   �   �   �   �   �   �� revenda-de-hospedagem (recursivo.)
+ �   �   �   �   �   �   �   �   �   �� hospedagem-de-site (recursivo.)
+ �   �   �   �   �   �   �   �   �� index (recursivo.)
+ �   �   �   �   �   �   �   �   �� servidores-dedicados-ssd-no-brasil (recursivo.)
+ �   �   �   �   �   �   �   �   �� servidores-dedicados-com-cpanel (recursivo.)
+ �   �   �   �   �   �   �   �   �� cloud-server-no-brasil (recursivo.)
+ �   �   �   �   �   �   �   �   �� cloud-server-com-cpanel (recursivo.)
+ �   �   �   �   �   �   �   �   �� revenda-de-hospedagem (recursivo.)
+ �   �   �   �   �   �   �   �   �� hospedagem-de-site (recursivo.)
+ �   �   �   �   �   �   �   �� revenda-de-hospedagem (recursivo.)
+ �   �   �   �   �   �   �   �� hospedagem-de-site (recursivo.)
+ �   �   �   �   �   �   �� contratar/servidor-cloud-b/31
+ �   �   �   �   �   �   �   �� index (recursivo.)
+ �   �   �   �   �   �   �   �� tutoriais-cpane/ (recursivo.)
+ �   �   �   �   �   �   �   �� index (recursivo.)
+ �   �   �   �   �   �   �   �� servidores-dedicados-ssd-no-brasil (recursivo.)
+ �   �   �   �   �   �   �   �� servidores-dedicados-com-cpanel (recursivo.)
+ �   �   �   �   �   �   �   �� cloud-server-no-brasil (recursivo.)
+ �   �   �   �   �   �   �   �� cloud-server-com-cpanel (recursivo.)
+ �   �   �   �   �   �   �   �� revenda-de-hospedagem (recursivo.)
+ �   �   �   �   �   �   �   �� hospedagem-de-site (recursivo.)
+ �   �   �   �   �   �   �� contratar/servidor-cloud-c/32
+ �   �   �   �   �   �   �   �� index (recursivo.)
+ �   �   �   �   �   �   �   �� tutoriais-cpane/ (recursivo.)
+ �   �   �   �   �   �   �   �� index (recursivo.)
+ �   �   �   �   �   �   �   �� servidores-dedicados-ssd-no-brasil (recursivo.)
+ �   �   �   �   �   �   �   �� servidores-dedicados-com-cpanel (recursivo.)
+ �   �   �   �   �   �   �   �� cloud-server-no-brasil (recursivo.)
+ �   �   �   �   �   �   �   �� cloud-server-com-cpanel (recursivo.)
+ �   �   �   �   �   �   �   �� revenda-de-hospedagem (recursivo.)
+ �   �   �   �   �   �   �   �� hospedagem-de-site (recursivo.)
+ �   �   �   �   �   �   �� index (recursivo.)
+ �   �   �   �   �   �   �� servidores-dedicados-ssd-no-brasil (recursivo.)
+ �   �   �   �   �   �   �� servidores-dedicados-com-cpanel (recursivo.)
+ �   �   �   �   �   �   �� cloud-server-no-brasil (recursivo.)
+ �   �   �   �   �   �   �� cloud-server-com-cpanel (recursivo.)
+ �   �   �   �   �   �   �� revenda-de-hospedagem (recursivo.)
+ �   �   �   �   �   �   �� hospedagem-de-site (recursivo.)
+ �   �   �   �   �   �� cloud-server-com-cpanel (recursivo.)
+ �   �   �   �   �   �� revenda-de-hospedagem (recursivo.)
+ �   �   �   �   �   �� hospedagem-de-site (recursivo.)
+ �   �   �   �   �� contratar/dedicado-b/40
+ �   �   �   �   �   �� index (recursivo.)
+ �   �   �   �   �   �� tutoriais-cpane/ (recursivo.)
+ �   �   �   �   �   �� index (recursivo.)
+ �   �   �   �   �   �� servidores-dedicados-ssd-no-brasil (recursivo.)
+ �   �   �   �   �   �� servidores-dedicados-com-cpanel (recursivo.)
+ �   �   �   �   �   �� cloud-server-no-brasil (recursivo.)
+ �   �   �   �   �   �� cloud-server-com-cpanel (recursivo.)
+ �   �   �   �   �   �� revenda-de-hospedagem (recursivo.)
+ �   �   �   �   �   �� hospedagem-de-site (recursivo.)
+ �   �   �   �   �� contratar/dedicado-c/41
+ �   �   �   �   �   �� index (recursivo.)
+ �   �   �   �   �   �� tutoriais-cpane/ (recursivo.)
+ �   �   �   �   �   �� index (recursivo.)
+ �   �   �   �   �   �� servidores-dedicados-ssd-no-brasil (recursivo.)
+ �   �   �   �   �   �� servidores-dedicados-com-cpanel (recursivo.)
+ �   �   �   �   �   �� cloud-server-no-brasil (recursivo.)
+ �   �   �   �   �   �� cloud-server-com-cpanel (recursivo.)
+ �   �   �   �   �   �� revenda-de-hospedagem (recursivo.)
+ �   �   �   �   �   �� hospedagem-de-site (recursivo.)
+ �   �   �   �   �� index (recursivo.)
+ �   �   �   �   �� servidores-dedicados-ssd-no-brasil (recursivo.)
+ �   �   �   �   �� servidores-dedicados-com-cpanel (recursivo.)
+ �   �   �   �   �� cloud-server-no-brasil (recursivo.)
+ �   �   �   �   �� cloud-server-com-cpanel (recursivo.)
+ �   �   �   �   �� revenda-de-hospedagem (recursivo.)
+ �   �   �   �   �� hospedagem-de-site (recursivo.)
+ �   �   �   �� cloud-server-no-brasil (recursivo.)
+ �   �   �   �� cloud-server-com-cpanel (recursivo.)
+ �   �   �   �� revenda-de-hospedagem (recursivo.)
+ �   �   �   �� hospedagem-de-site (recursivo.)
+ �   �   �� contratar/dedicado-b-ssd/24
+ �   �   �   �� index (recursivo.)
+ �   �   �   �� tutoriais-cpane/ (recursivo.)
+ �   �   �   �� index (recursivo.)
+ �   �   �   �� servidores-dedicados-ssd-no-brasil (recursivo.)
+ �   �   �   �� servidores-dedicados-com-cpanel (recursivo.)
+ �   �   �   �� cloud-server-no-brasil (recursivo.)
+ �   �   �   �� cloud-server-com-cpanel (recursivo.)
+ �   �   �   �� revenda-de-hospedagem (recursivo.)
+ �   �   �   �� hospedagem-de-site (recursivo.)
+ �   �   �� contratar/dedicado-c-ssd/25
+ �   �   �   �� index (recursivo.)
+ �   �   �   �� tutoriais-cpane/ (recursivo.)
+ �   �   �   �� index (recursivo.)
+ �   �   �   �� servidores-dedicados-ssd-no-brasil (recursivo.)
+ �   �   �   �� servidores-dedicados-com-cpanel (recursivo.)
+ �   �   �   �� cloud-server-no-brasil (recursivo.)
+ �   �   �   �� cloud-server-com-cpanel (recursivo.)
+ �   �   �   �� revenda-de-hospedagem (recursivo.)
+ �   �   �   �� hospedagem-de-site (recursivo.)
+ �   �   �� index (recursivo.)
+ �   �   �� servidores-dedicados-ssd-no-brasil (recursivo.)
+ �   �   �� servidores-dedicados-com-cpanel (recursivo.)
+ �   �   �� cloud-server-no-brasil (recursivo.)
+ �   �   �� cloud-server-com-cpanel (recursivo.)
+ �   �   �� revenda-de-hospedagem (recursivo.)
+ �   �   �� hospedagem-de-site (recursivo.)
+ �   �� servidores-dedicados-com-cpanel (recursivo.)
+ �   �� cloud-server-no-brasil (recursivo.)
+ �   �� cloud-server-com-cpanel (recursivo.)
+ �   �� revenda-de-hospedagem (recursivo.)
+ �   �� hospedagem-de-site (recursivo.)
+ �� servidores-dedicados-ssd-no-brasil (recursivo.)
+ �� servidores-dedicados-com-cpanel (recursivo.)
+ �� cloud-server-no-brasil (recursivo.)
+ �� revenda-de-hospedagem (recursivo.)
+ �� hospedagem-de-site (recursivo.)
+ �� empresa
+ �   �� index (recursivo.)
+ �   �� tutoriais-cpane/ (recursivo.)
+ �   �� index (recursivo.)
+ �   �� servidores-dedicados-ssd-no-brasil (recursivo.)
+ �   �� servidores-dedicados-com-cpanel (recursivo.)
+ �   �� cloud-server-no-brasil (recursivo.)
+ �   �� cloud-server-com-cpanel (recursivo.)
+ �   �� revenda-de-hospedagem (recursivo.)
+ �   �� hospedagem-de-site (recursivo.)
+ �� contratar/dedicado-a-ssd/23 (recursivo.)
+ �� contratar/dedicado-b-ssd/24 (recursivo.)
+ �� contratar/dedicado-c-ssd/25 (recursivo.)
+ �� contratar/servidor-cloud-a/30 (recursivo.)
+ �� contratar/servidor-cloud-b/31 (recursivo.)
+ �� contratar/servidor-cloud-c/32 (recursivo.)
+ �� contratar/revenda-a/28 (recursivo.)
+ �� contratar/revenda-b/29 (recursivo.)
+ �� contratar/revenda-c/49 (recursivo.)
+ �� contratar/hospedagem-a/26 (recursivo.)
+ �� contratar/hospedagem-b/27 (recursivo.)
+ �� contratar/hospedagem-c/48 (recursivo.)
+ �� quem-somos
+ �   �� index (recursivo.)
+ �   �� tutoriais-cpane/ (recursivo.)
+ �   �� index (recursivo.)
+ �   �� servidores-dedicados-ssd-no-brasil (recursivo.)
+ �   �� servidores-dedicados-com-cpanel (recursivo.)
+ �   �� cloud-server-no-brasil (recursivo.)
+ �   �� cloud-server-com-cpanel (recursivo.)
+ �   �� revenda-de-hospedagem (recursivo.)
+ �   �� hospedagem-de-site (recursivo.)
+ �� quem-somos (recursivo.)
+ �� infraestrutura
+ �   �� index (recursivo.)
+ �   �� tutoriais-cpane/ (recursivo.)
+ �   �� index (recursivo.)
+ �   �� servidores-dedicados-ssd-no-brasil (recursivo.)
+ �   �� servidores-dedicados-com-cpanel (recursivo.)
+ �   �� cloud-server-no-brasil (recursivo.)
+ �   �� cloud-server-com-cpanel (recursivo.)
+ �   �� revenda-de-hospedagem (recursivo.)
+ �   �� hospedagem-de-site (recursivo.)
+ �� infraestrutura (recursivo.)
+ �� index (recursivo.)
+ �� servidores-dedicados-ssd-no-brasil (recursivo.)
+ �� servidores-dedicados-com-cpanel (recursivo.)
+ �� cloud-server-no-brasil (recursivo.)
+ �� cloud-server-com-cpanel (recursivo.)
+ �� revenda-de-hospedagem (recursivo.)
+ �� hospedagem-de-site (recursivo.)
+
+
+
+
+
+
+
+
+
