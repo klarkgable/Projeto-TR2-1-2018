@@ -39,7 +39,7 @@ Alunos:
 		5)Rodar aracne( comando ./aracne) que irá rodar na porta 8228 caso não passe outra porta como argumento. Para fazer os requests e responses o navegador web que for utilizar deve ter o proxy configurado no servidorProxy:127.0.0.1 e porta 8228.
 		6) Escolha opção 1 para rodar o interceptor ou opção 2 para rodar o spider. Dumper não foi possível implementar
 		7) No caso do interceptor, abra o navegador e entre nos sites para gerar as requisições e respostas.
-		6)Para rodar o Spider, precisa abrir a main e setar a chamada ao Spider com por exemplo Spider("www.sitequalquer.com"). Caso não faça isso ele irá rodar o spider no site configurado previamente.
+		6)Para rodar o Spider, escolha opção 2 e digite o site que deseja buscar referências e formar a árvore.
 		
 		
 
